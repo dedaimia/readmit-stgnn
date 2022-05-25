@@ -1,0 +1,216 @@
+,Group,Subgroup,Low,High,Modifier
+0,Anesthesia,Anesthesia for Procedures on the Head,100,222,
+1,Anesthesia,Anesthesia for Procedures on the Neck,300,352,
+2,Anesthesia,Anesthesia for Procedures on the Thorax (Chest Wall and Shoulder Girdle),400,474,
+3,Anesthesia,Anesthesia for Intrathoracic Procedures,500,580,
+4,Anesthesia,Anesthesia for Procedures on the Spine and Spinal Cord,600,670,
+5,Anesthesia,Anesthesia for Procedures on the Upper Abdomen,700,797,
+6,Anesthesia,Anesthesia for Procedures on the Lower Abdomen,800,882,
+7,Anesthesia,Anesthesia for Procedures on the Perineum,902,952,
+8,Anesthesia,Anesthesia for Procedures on the Pelvis (Except Hip),1112,1173,
+9,Anesthesia,Anesthesia for Procedures on the Upper Leg (Except Knee),1200,1274,
+10,Anesthesia,Anesthesia for Procedures on the Knee and Popliteal Area,1320,1444,
+11,Anesthesia,Anesthesia for Procedures on the Lower Leg (Below Knee),1462,1522,
+12,Anesthesia,Anesthesia for Procedures on the Shoulder and Axilla,1610,1680,
+13,Anesthesia,Anesthesia for Procedures on the Upper Arm and Elbow,1710,1782,
+14,Anesthesia,"Anesthesia for Procedures on the Forearm, Wrist, and Hand",1810,1860,
+15,Anesthesia,Anesthesia for Radiological Procedures,1916,1936,
+16,Anesthesia,Anesthesia for Burn Excisions or Debridement Procedures,1951,1953,
+17,Anesthesia,Anesthesia for Obstetric Procedures,1958,1969,
+18,Anesthesia,Anesthesia for Other Procedures,1990,1999,
+19,Surgery,General Surgical Procedures,10004,10021,
+20,Surgery,Surgical Procedures on the Integumentary System,10030,19499,
+21,Surgery,Surgical Procedures on the Musculoskeletal System,20100,29999,
+22,Surgery,Surgical Procedures on the Respiratory System,30000,32999,
+23,Surgery,Surgical Procedures on the Cardiovascular System,33016,37799,
+24,Surgery,Surgical Procedures on the Hemic and Lymphatic Systems,38100,38999,
+25,Surgery,Surgical Procedures on the Mediastinum and Diaphragm,39000,39599,
+26,Surgery,Surgical Procedures on the Digestive System,40490,49999,
+27,Surgery,Surgical Procedures on the Urinary System,50010,53899,
+28,Surgery,Surgical Procedures on the Male Genital System,54000,55899,
+29,Surgery,Reproductive System Procedures,55920,55920,
+30,Surgery,Intersex Surgery,55970,55980,
+31,Surgery,Surgical Procedures on the Female Genital System,56405,58999,
+32,Surgery,Surgical Procedures for Maternity Care and Delivery,59000,59899,
+33,Surgery,Surgical Procedures on the Endocrine System,60000,60699,
+34,Surgery,Surgical Procedures on the Nervous System,61000,64999,
+35,Surgery,Surgical Procedures on the Eye and Ocular Adnexa,65091,68899,
+36,Surgery,Surgical Procedures on the Auditory System,69000,69979,
+37,Surgery,Operating Microscope Procedures,69990,69990,
+38,Radiology Procedures,Diagnostic Radiology (Diagnostic Imaging) Procedures,70010,76499,
+39,Radiology Procedures,Diagnostic Ultrasound Procedures,76506,76999,
+40,Radiology Procedures,Radiologic Guidance,77001,77022,
+41,Radiology Procedures,"Breast, Mammography",77046,77067,
+42,Radiology Procedures,Bone/Joint Studies,77071,77086,
+43,Radiology Procedures,Radiation Oncology Treatment,77261,77799,
+44,Radiology Procedures,Nuclear Medicine Procedures,78012,79999,
+45,Pathology and Laoratory,Proprietary Laboratory Analyses,1,247,U
+46,Pathology and Laoratory,Organ or Disease Oriented Panels,80047,80081,
+47,Pathology and Laoratory,Therapeutic Drug Assays,80143,80377,
+48,Pathology and Laoratory,Drug Assay Procedures,80305,83992,
+49,Pathology and Laoratory,Evocative/Suppression Testing Procedures,80400,80439,
+50,Pathology and Laoratory,Clinical Pathology Consultations,80500,80502,
+51,Pathology and Laoratory,Urinalysis Procedures,81000,81099,
+52,Pathology and Laoratory,Molecular Pathology Procedures,81105,81479,
+53,Pathology and Laoratory,Genomic Sequencing Procedures and Other Molecular Multianalyte Assays,81410,81471,
+54,Pathology and Laoratory,Multianalyte Assays with Algorithmic Analyses,81490,81599,
+55,Pathology and Laoratory,Chemistry Procedures,82009,84999,
+56,Pathology and Laoratory,Hematology and Coagulation Procedures,85002,85999,
+57,Pathology and Laoratory,Immunology Procedures,86000,86849,
+58,Pathology and Laoratory,Transfusion Medicine Procedures,86850,86999,
+59,Pathology and Laoratory,Microbiology Procedures,87003,87999,
+60,Pathology and Laoratory,Anatomic Pathology Procedures,88000,88099,
+61,Pathology and Laoratory,Cytopathology Procedures,88104,88199,
+62,Pathology and Laoratory,Cytogenetic Studies,88230,88299,
+63,Pathology and Laoratory,Surgical Pathology Procedures,88300,88399,
+64,Pathology and Laoratory,"In Vivo (eg, Transcutaneous) Laboratory Procedures",88720,88749,
+65,Pathology and Laoratory,Other Pathology and Laboratory Procedures,89049,89240,
+66,Pathology and Laoratory,Reproductive Medicine Procedures,89250,89398,
+67,Medicine Services and Procedure,"Immune Globulins, Serum or Recombinant Products",90281,90399,
+68,Medicine Services and Procedure,Immunization Administration for Vaccines/Toxoids,90460,90475,
+69,Medicine Services and Procedure,"Vaccines, Toxoids",90476,90756,
+70,Medicine Services and Procedure,Psychiatry Services and Procedures,90785,90899,
+71,Medicine Services and Procedure,Biofeedback Services and Procedures,90901,90913,
+72,Medicine Services and Procedure,Dialysis Services and Procedures,90935,90999,
+73,Medicine Services and Procedure,Gastroenterology Procedures,91010,91299,
+74,Medicine Services and Procedure,COVID-19 Vaccines/Toxoids,91300,91304,
+75,Medicine Services and Procedure,Ophthalmology Services and Procedures,92002,92499,
+76,Medicine Services and Procedure,Special Otorhinolaryngologic Services and Procedures,92502,92700,
+77,Medicine Services and Procedure,Cardiovascular Procedures,92920,93799,
+78,Medicine Services and Procedure,Non-Invasive Vascular Diagnostic Studies,93880,93998,
+79,Medicine Services and Procedure,Pulmonary Procedures,94002,94799,
+80,Medicine Services and Procedure,Allergy and Clinical Immunology Procedures,95004,95199,
+81,Medicine Services and Procedure,Endocrinology Services,95249,95251,
+82,Medicine Services and Procedure,Neurology and Neuromuscular Procedures,95700,96020,
+83,Medicine Services and Procedure,Medical Genetics and Genetic Counseling Services,96040,96040,
+84,Medicine Services and Procedure,"Central Nervous System Assessments/Tests (eg, Neuro-Cognitive, Mental Status, Speech Testing)",96105,96146,
+85,Medicine Services and Procedure,Health Behavior Assessment and Intervention Procedures,96156,96171,
+86,Medicine Services and Procedure,"Hydration, Therapeutic, Prophylactic, Diagnostic Injections and Infusions, and Chemotherapy and Other Highly Complex Drug or Highly Complex Biologic Agent Administration",96360,96549,
+87,Medicine Services and Procedure,Photodynamic Therapy Procedures,96567,96574,
+88,Medicine Services and Procedure,Special Dermatological Procedures,96900,96999,
+89,Medicine Services and Procedure,Physical Medicine and Rehabilitation Evaluations,97010,97799,
+90,Medicine Services and Procedure,Adaptive Behavior Services,97151,97158,
+91,Medicine Services and Procedure,Medical Nutrition Therapy Procedures,97802,97804,
+92,Medicine Services and Procedure,Acupuncture Procedures,97810,97814,
+93,Medicine Services and Procedure,Osteopathic Manipulative Treatment Procedures,98925,98929,
+94,Medicine Services and Procedure,Chiropractic Manipulative Treatment Procedures,98940,98943,
+95,Medicine Services and Procedure,Education and Training for Patient Self-Management,98960,98962,
+96,Medicine Services and Procedure,Non-Face-to-Face Nonphysician Services,98966,98972,
+97,Medicine Services and Procedure,"Special Services, Procedures and Reports",99000,99091,
+98,Medicine Services and Procedure,Qualifying Circumstances for Anesthesia,99100,99140,
+99,Medicine Services and Procedure,Moderate (Conscious) Sedation,99151,99157,
+100,Medicine Services and Procedure,Other Medicine Services and Procedures,99170,99199,
+101,Medicine Services and Procedure,Home Health Procedures and Services,99500,99602,
+102,Medicine Services and Procedure,Medication Therapy Management Services,99605,99607,
+103,Evaluation and Management,Non-Face-to-Face Evaluation and Management Services,99091,99474,
+104,Evaluation and Management,Office or Other Outpatient Services,99202,99215,
+105,Evaluation and Management,Hospital Observation Services,99217,99226,
+106,Evaluation and Management,Hospital Inpatient Services,99221,99239,
+107,Evaluation and Management,Consultation Services,99241,99255,
+108,Evaluation and Management,Emergency Department Services,99281,99288,
+109,Evaluation and Management,Critical Care Services,99291,99292,
+110,Evaluation and Management,Nursing Facility Services,99304,99318,
+111,Evaluation and Management,"Domiciliary, Rest Home (eg, Boarding Home), or Custodial Care Services",99324,99337,
+112,Evaluation and Management,"Domiciliary, Rest Home (eg, Assisted Living Facility), or Home Care Plan Oversight Services",99339,99340,
+113,Evaluation and Management,Home Services,99341,99350,
+114,Evaluation and Management,Prolonged Services,99354,99417,
+115,Evaluation and Management,Case Management Services,99366,99368,
+116,Evaluation and Management,Care Plan Oversight Services,99374,99380,
+117,Evaluation and Management,Preventive Medicine Services,99381,99429,
+118,Evaluation and Management,Care Management Evaluation and Management Services,99439,99491,
+119,Evaluation and Management,Special Evaluation and Management Services,99450,99458,
+120,Evaluation and Management,Newborn Care Services,99460,99463,
+121,Evaluation and Management,Delivery/Birthing Room Attendance and Resuscitation Services,99464,99465,
+122,Evaluation and Management,Inpatient Neonatal Intensive Care Services and Pediatric and Neonatal Critical Care Services,99466,99486,
+123,Evaluation and Management,Cognitive Assessment and Care Plan Services,99483,99486,
+124,Evaluation and Management,General Behavioral Health Integration Care Management,99484,99484,
+125,Evaluation and Management,Psychiatric Collaborative Care Management Services,99492,99494,
+126,Evaluation and Management,Transitional Care Evaluation and Management Services,99495,99496,
+127,Evaluation and Management,Advance Care Planning Evaluation and Management Services,99497,99498,
+128,Evaluation and Management,Other Evaluation and Management Services,99499,99499,
+129,Category II,Composite Measures,1,15,F
+130,Category II,Patient Management,500,584,F
+131,Category II,Patient History,1000,1505,F
+132,Category II,Physical Examination,2000,2060,F
+133,Category II,Diagnostic/Screening Processes or Results,3006,3776,F
+134,Category II,"Therapeutic, Preventive or Other Interventions",4000,4563,F
+135,Category II,Follow-up or Other Outcomes,5005,5250,F
+136,Category II,Patient Safety,6005,6150,F
+137,Category II,Structural Measures,7010,7025,F
+138,Category II,Non-Measure Category II Codes,9001,9007,F
+139,Multianalyte,Multianalyte,2,2,M
+140,Multianalyte,Multianalyte,3,3,M
+141,Multianalyte,Multianalyte,4,4,M
+142,Multianalyte,Multianalyte,6,6,M
+143,Multianalyte,Multianalyte,7,7,M
+144,Multianalyte,Multianalyte,11,11,M
+145,Multianalyte,Multianalyte,12,12,M
+146,Multianalyte,Multianalyte,13,13,M
+147,Multianalyte,Multianalyte,14,14,M
+148,Multianalyte,Multianalyte,15,15,M
+149,Multianalyte,Multianalyte,16,16,M
+150,Multianalyte,Multianalyte,17,17,M
+151,Category III,Various Services - Category III Codes,42,184,T
+152,Category III,Remote Real-Time Interactive Video-conferenced Critical Care Services and Other Undefined Category Codes,191,232,T
+153,Category III,Atherectomy (Open or Percutaneous) for Supra-Inguinal Arteries and Other Undefined Category Codes,234,317,T
+154,Category III,"Imaging, Testing, Implantation and Other Services",329,358,T
+155,Category III,Adaptive Behavior Assessments,362,373,T
+156,Category III,Other Procedures and Assessments,376,379,T
+157,Category III,Pacemaker - Leadless and Pocketless System,394,423,T
+158,Category III,Phrenic Nerve Stimulation System Procedures,424,468,T
+159,Category III,"Imaging, evaluation, programming and recording procedures",469,478,T
+160,Category III,Laser ablation procedures,479,480,T
+161,Category III,Blood products transfusion procedure,481,481,T
+162,Category III,Cardiac diagnostic imaging and surgical procedures,483,484,T
+163,Category III,Diagnostic procedures,485,487,T
+164,Category III,Behavior Analysis,488,488,T
+165,Category III,"Cellular regeneration, evaluation study and ablation procedures",489,493,T
+166,Category III,Organ transplantation procedures,494,496,T
+167,Category III,Cardiac imaging procedures,497,498,T
+168,Category III,Procedures performed on Urethra,499,499,T
+169,Category III,Human Papillomavirus (HPV) analysis,500,500,T
+170,Category III,Coronary artery disease (CAD) analysis,501,504,T
+171,Category III,Other Diagnostic and Therapeutic Procedures,505,508,T
+172,Category III,"Vision Studies, Implants and Therapies",509,514,T
+173,Category III,"Cardiac Device Implantation, Analysis and Removal Procedures",515,523,T
+174,Category III,Ablation Procedures,524,524,T
+175,Category III,Intracardiac Ischemia Monitoring Procedures,525,532,T
+176,Category III,Movement Disorder Analysis,533,536,T
+177,Category III,Cellular Therapy Procedures,537,540,T
+178,Category III,Cardiac Muscle Imaging,541,542,T
+179,Category III,Cardiac Valve Repair Procedures,543,545,T
+180,Category III,Radiofrequency Spectrometry Assessment and Bone Quality Testing Procedures,546,547,T
+181,Category III,Incontinence Management Procedures,548,551,T
+182,Category III,Laser Therapy and Implant Procedures,552,553,T
+183,Category III,Bone Strength And Fracture Risk Assessment,554,557,T
+184,Category III,Computed Tomography Analysis,558,558,T
+185,Category III,Anatomic Model And Guide Creation,559,562,T
+186,Category III,"Chemo Drug Essay, Implant and Other Procedures",563,568,T
+187,Category III,Cardiac Procedures with Evaluation on Valves and ICD System,569,580,T
+188,Category III,Ablation Procedures,581,582,T
+189,Category III,Procedures Peformed on Ear,583,583,T
+190,Category III,Islet Cell Transplant Procedure,584,586,T
+191,Category III,Neurostimulation Procedures,587,590,T
+192,Category III,Health And Well-Being Coaching,591,593,T
+193,Category III,Limb Lengthening Procedure,594,594,T
+194,Category III,Female Voiding Prosthesis Procedures,596,597,T
+195,Category III,Wound Imaging for Bacterial Presence,598,599,T
+196,Category III,Irreversible Electroporation Ablation Procedures,600,601,T
+197,Category III,Transdermal GFR Measurement and Monitoring,602,603,T
+198,Category III,Eye Imaging Procedures (Remote),604,606,T
+199,Category III,Remote Monitoring of Pulmonary System,607,608,T
+200,Category III,Magnetic Resonance Spectroscopy Imaging,609,612,T
+201,Category III,Cardiac Implantation and Replacement Procedures,613,614,T
+202,Category III,Procedures performed on Eyes,615,618,T
+203,Category III,Procedures performed on Prostate,619,619,T
+204,Category III,Endovascular Lower Limb Procedure,620,620,T
+205,Category III,Trabeculostomy Procedure by Laser (Ab Interno),621,622,T
+206,Category III,Automated Analysis of Coronary Atherosclerotic plaque for CAD,623,626,T
+207,Category III,Percutaneous Lumbar Intravertebral Disc Injection Procedure,627,630,T
+208,Category III,Hyperspectral Imaging Measurement of Hemoglobin,631,631,T
+209,Category III,Transcatheter Ultrasound Nerve Ablation Procedure,632,632,T
+210,Category III,CT Breast (with/without Contrast),633,638,T
+211,Category III,CSF Shunt Analysis,639,639,T
+212,PR RPR MENINGOCELE <5 CM,PR RPR MENINGOCELE <5 CM,637000000,637000000,
+213,HC INCISN EXTENSOR TNDN SHTH WRST,HC INCISN EXTENSOR TNDN SHTH WRST,250000006,250000006,
+214,PR INCISN EXTENSOR TNDN SHTH WRST,PR INCISN EXTENSOR TNDN SHTH WRST,250000007,250000007,

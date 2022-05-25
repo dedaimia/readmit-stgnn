@@ -1,0 +1,40 @@
+Status,Count,Include
+Given,6683968,Y
+Rate Verify,1604052,Y
+New Bag,1180166,Y
+Not Given,805425,
+Rate Change,441419,
+Stopped,332952,
+See Alternative,243976,
+MAR Hold,226760,
+MAR Unhold,226756,
+Canceled Entry,71229,
+Medication Applied,56360,Y
+Restarted,53302,Y
+Handoff,47800,Y
+Medication Removed,47605,
+Anesthesia Volume Adjustment,47282,Y
+Automatically Held,32835,Y
+New  Bag,29904,Y
+Bolus from Bag,27429,Y
+Continued from OR,18132,Y
+Feeding Given,10667,Y
+Return to Cabinet,7478,
+Continue to Inpatient Floor,6253,
+New Syringe/Cartridge,5163,Y
+Bolus,4452,Y
+Override Pull,3883,Y
+No Dose Today,3530,
+Given by Other,3284,Y
+Started During Downtime,2796,Y
+Self Administered Via Pump,2408,Y
+Held by provider,2377,
+Unheld by provider,2326,
+Subsequent Bag,1749,Y
+Continue to External Healthcare Facility,977,Y
+Override pull for Anesthesia,360,Y
+Anesthesia Discontinued,332,Y
+Given During Downtime,309,Y
+Rate Changed,288,Y
+Auto Administered Via Pump,214,Y
+Pump Refill,77,Y

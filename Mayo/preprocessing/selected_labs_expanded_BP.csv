@@ -1,0 +1,62 @@
+,0,1,2,3,4
+0,"Glucose, POCT, B",406779,1,,"Glucose, POCT"
+1,Hemoglobin,197818,1,,Hemoglobin
+2,Platelet Count,192885,1,,Platelet Count
+3,Hematocrit,190452,1,,Hematocrit
+4,Erythrocytes,187715,1,,Erythrocytes
+5,Leukocytes,187207,1,,Leukocytes
+9,"Potassium, S",147003,1,,Potassium
+10,"Sodium, S",142937,1,,Sodium
+11,"Creatinine, S",141028,1,,Creatinine
+12,"Bicarbonate, S",139183,1,,Bicarbonate
+13,"Chloride, S",139139,1,,Chloride
+14,Anion Gap,138817,1,,Anion Gap
+15,"Calcium, Total, S",137986,1,,"Calcium, Total"
+16,"Glucose, S",136432,1,,Glucose
+17,"Bld Urea Nitrog(BUN), S",122523,1,,Bld Urea Nitrog(BUN)
+20,Lymphocytes,109844,1,,Lymphocytes
+21,Monocytes,108341,1,,Monocytes
+22,Neutrophils,106751,1,,Neutrophils
+23,Eosinophils,105375,1,,Eosinophils
+24,Basophils,103128,1,,Basophils
+27,"Potassium, P",75093, ,,Potassium
+28,"Sodium, P",73088, ,,Sodium
+29,"Chloride, P",70798, ,,Chloride
+30,"Bicarbonate, P",70785, ,,Bicarbonate
+31,"Creatinine, P",70545, ,,Creatinine
+32,"Glucose, P",70429, ,,Glucose
+33,"Anion Gap, P",70312, ,,Anion Gap
+34,"Calcium, Total, P",70273, ,,"Calcium, Total"
+41,pH,52836,1,,pH
+47,"Hemoglobin, B",40996, ,,Hemoglobin
+55,pCO2,35451,1,,pCO2
+56,FIO2,34131,1,,FIO2
+57,pO2,33998,1,,pO2
+59,"Lactate, P",33259,1,,Lactate
+67,Glucose,29349,,,Glucose
+78,"Lactate, B",17321,,,Lactate
+82,"pH, U",16330,,,pH
+111,"Potassium, B",10674, ,,Potassium
+114,"Sodium, B",10144,,,Sodium
+126,"Troponin T, 6 hr, 5th gen",9066,1,,"Troponin T, 6 hr, 5th gen"
+128,"Troponin T, 2 hr, 5th gen",9058,1,,"Troponin T, 2 hr, 5th gen"
+133,"Troponin T, Baseline, 5th gen",8878,1,,"Troponin T, Baseline, 5th gen"
+143,Venous pH,8133,1,,Venous pH
+144,Venous pCO2,8133,1,,Venous pCO2
+145,Venous pO2,8132,1,,Venous pO2
+265,"Glucose, U",2676,,,Glucose
+389,Bicarbonate,1182,,,Bicarbonate
+419,"Glucose, POCT, U",1021,,,"Glucose, POCT"
+565,Sodium,502,,,Sodium
+571,Potassium,502,,,Potassium
+792,"Eosinophils, U",260,,,Eosinophils
+807,Creatinine,239,,,Creatinine
+1015,"Creatinine, B",128,,,Creatinine
+1022,Chloride,126,,,Chloride
+1091,"Creatinine, U",112,,,Creatinine
+1607,"Sodium, F",31,,,Sodium
+1612,"Potassium, F",31,,,Potassium
+1617,"Chloride, F",31,,,Chloride
+1934,"Sodium, U",18,,,Sodium
+2255,"Chloride, B",11,,,Chloride
+3240,"Chloride, U",2,,,Chloride
