@@ -1,8 +1,8 @@
-# Cohort selectipon
+#Cohort selectipon
 
 cohort_selection.py - keep all unique hospitaliztions longer than 2 days
 
-# Five EHR modalities
+#Five EHR modalities
 
 1- demographics
 2- CPT/procedures - mapped to CPT subgroups
@@ -11,4 +11,4 @@ cohort_selection.py - keep all unique hospitaliztions longer than 2 days
 5- Medications - mapped to MED_THERAPEUTIC_CLASS
 
 
-### run main.py for all pre-processing step including cohort selection
+###run main.py for all pre-processing step including cohort selection
