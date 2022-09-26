@@ -8,27 +8,16 @@ import sys
 import shutil
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-if __name__ == "__main__":
-    print(f"Arguments count: {len(sys.argv)}")
-    print(sys.argv)
-    d, st_idx, ed_idx = sys.argv
-    suffix = st_idx+'_'+ed_idx
-    st_idx = int(st_idx)
-    ed_idx = int(ed_idx)
-    print(st_idx, ed_idx, type(st_idx), type(ed_idx), suffix)
-    sys.stdout.flush()
 
-    '''
-    EDTWH_FACT_PROCEDURES.xlsx has multiple sheets of CPT codes and timestamps pulled for patients
-    EDTWH_FACT_PROCEDURES_ALL.csv has all data combined into one large sheet
-    EDTWH_FACT_PROCEDURES_ALL_selected_patients.csv has been filtered based on PATIENT_DK matching our cohort
-    '''
-    df_cpt = pd.read_csv('../bucket/Readmission_30days/Readmission/EDTWH_FACT_PROCEDURES_ALL_selected_pateints.csv', error_bad_lines=False)  ## all cpt recorded /one cpt code per row
+def cpt_featurization(df, df_cpt):
+    """
+    df: selected cohort file, one hospitalization per row
+    df_cpt: EDTWH_FACT_PROCEDURES file from SQL query - one cpt recorded per row
 
-    print(len(df_cpt), len(df_cpt.PATIENT_DK.unique()))
-    sys.stdout.flush()
+    df_all: return file with one hospitalization per row with row containing all cpt subgroups for that hospitalization
+    """     
 
-    dfcpt_groups = pd.read_csv("EHR2VEC/COVID_code/CPT_group_structure.csv") #cpt code structure
+    dfcpt_groups = pd.read_csv("CPT_group_structure.csv") #cpt code structure
     print(len(dfcpt_groups))
     sys.stdout.flush()
 
@@ -49,22 +38,13 @@ if __name__ == "__main__":
         return out
 
 
-    ## use this as base file
-    df = pd.read_csv('../bucket/Readmission_30days/Amara/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded.csv') ## base cohort file
-    print(len(df),len(df_cpt))
-    sys.stdout.flush()
-    ed_idx = min(ed_idx, len(df))
-    df = df.iloc[st_idx:ed_idx].copy()
-    df_cpt = df_cpt.loc[df_cpt.PATIENT_DK.isin(df.PATIENT_DK_x.unique())]
-    print(len(df),len(df_cpt))
-    sys.stdout.flush()
+    
     df['ADMISSION_DTM'] = pd.to_datetime(df['ADMISSION_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
     df_cpt['PROCEDURE_DTM'] = pd.to_datetime(df_cpt['PROCEDURE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
 
-    ## CPT Featurization Temporal - by days
     features = dfcpt_groups.Subgroup.unique()
     pd.set_option('mode.chained_assignment', None)
     df_all = pd.DataFrame(columns = columns)
@@ -110,8 +90,4 @@ if __name__ == "__main__":
             idx+=1         
         if i%100==0:
             print('Count:', i, idx)
-        if i%1000==0:
-            df_all.to_csv('../bucket/Readmission_30days/Amara/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded_CPT_daily_'+suffix+'.csv')
-            sys.stdout.flush()
-
-    df_all.to_csv('../bucket/Amara/Readmission_30days/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded_CPT_daily_'+suffix+'.csv')
+    return df_all

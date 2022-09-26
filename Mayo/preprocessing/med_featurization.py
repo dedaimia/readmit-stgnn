@@ -12,35 +12,23 @@ import time
 print('all imported')
 sys.stdout.flush()
 
-if __name__ == "__main__":
-    print(f"Arguments count: {len(sys.argv)}")
-    print(sys.argv)
-    d, st_idx, ed_idx = sys.argv
-    suffix = st_idx+'_'+ed_idx
-    st_idx = int(st_idx)
-    ed_idx = int(ed_idx)
-    print(st_idx, ed_idx, type(st_idx), type(ed_idx), suffix)
-    sys.stdout.flush()
+def med_featurization(df, df_med):
+    """
+    df: selected cohort file, one hospitalization per row
+    df_med: Medications file from SQL query - one medication recorded per row
 
- 
-
-       
-    df = pd.read_csv('/media/Datacenter_storage/Readmission/Amara/Readmission_label_Demo_processed_w_first_xray_loc_expanded_w_MRN.csv', low_memory=False)
-    ed_idx = min(ed_idx, len(df))
-    df = df.iloc[st_idx:ed_idx].copy()
-    print(len(df))
-    sys.stdout.flush()
+    df_all: return file with one hospitalization per row with row containing all med therapeutic classes for that hospitalization
+    """     
     
     
     df['ADMISSION_DTM'] = pd.to_datetime(df['ADMISSION_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     
+    df_med_status_sel = pd.read_csv('administered_status_counts_marked.csv')
+    df_med_status_sel = df_med_status_sel.dropna(subset=['Include'])
+    med_status_sel = df_med_status_sel.Status.values
     
-    '''
-    original file should be xlsx with mulitple sheets. convert it to csv with one large sheet.
-    Medication_administered_48h_cohort_given.csv filtered such that PATIENT_DK matches our cohort and ADMINSITERED_STATUS matches the ones marked with Y in administered_status_counts_marked.csv 
-    '''
-    df_med = pd.read_csv('Medication_administered_48h_cohort_given.csv') #only actually administered medications, not just prescribed
+    df_med = df_med.loc[(df_med.PATIENT_DK.isin(df.PATIENT_DK.unique())) & (df_med.ADMINISTERED_STATUS.isin(med_status_sel))] #only actually administered medications, not just prescribed, mathcign cohort patients
     
     print('Meds file length:', len(df_med))
 
@@ -50,7 +38,7 @@ if __name__ == "__main__":
     meds = meds.dropna(subset=['MED_THERAPEUTIC_CLASS_DESCRIPTION'])
     sel_meds = meds.MED_THERAPEUTIC_CLASS_CODE.values
     print('selected medss:', len(meds))
-    df_med = df_med.loc[df_med.MED_THERAPEUTIC_CLASS_CODE.isin(sel_meds)]
+    df_med = df_med.loc[df_med.MED_THERAPEUTIC_CLASS_CODE.isin(sel_meds)]  #keep pnly selected therapeutic classes of meds
     print('meds file length:', len(df_med))
     sys.stdout.flush()
     
@@ -108,8 +96,5 @@ if __name__ == "__main__":
        sys.stdout.flush()         
        if i%100==0:
            print('Count:', i, idx)
-       if i%1000==0:
-           df_all.to_csv('Readmission_label_Demo_processed_w_xray_loc_expanded_48h_Med_daily_'+suffix+'.csv')  
-       
-    df_all.to_csv('Readmission_label_Demo_processed_w_xray_loc_expanded_48h_Med_daily_'+suffix+'.csv') 
+    return df_all
     

@@ -8,26 +8,16 @@ import sys
 import shutil
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-if __name__ == "__main__":
-    print(f"Arguments count: {len(sys.argv)}")
-    print(sys.argv)
-    d, st_idx, ed_idx = sys.argv
-    suffix = st_idx+'_'+ed_idx
-    st_idx = int(st_idx)
-    ed_idx = int(ed_idx)
-    print(st_idx, ed_idx, type(st_idx), type(ed_idx), suffix)
-    sys.stdout.flush()
 
-    columns = ['PATIENT_DK', 'DIAGNOSIS_DTM', 'DIAGNOSIS_CODE'] 
-    '''
-    EDTWH_FACT_DIAGNOSIS.xlsx has multiple sheets of ICD10 codes and timestamps pulled for patients
-    EDTWH_FACT_DIAGNOSIS.csv has all data combined into one large sheet
-    '''
-    df_icd = pd.read_csv('../bucket/Readmission_30days/Readmission/EDTWH_FACT_DIAGNOSIS.csv', usecols = columns) #all icd code recorded, one code per row
-    print(len(df_icd), len(df_icd.PATIENT_DK.unique()))
-    sys.stdout.flush()
+def icd_featurization(df, df_icd):
+    """
+    df: selected cohort file, one hospitalization per row
+    df_icd: EDTWH_FACT_DIAGNOSES file from SQL query - one icd code recorded per row
 
-    icd = pd.read_csv('../bucket/Readmission_30days/Amara/Readmission_Data/ICD10_Groups.csv') #ICD10 hierarchy
+    df_all: return file with one hospitalization per row with row containing all icd subgroups for that hospitalization
+    """     
+
+    icd = pd.read_csv(ICD10_Groups.csv') #ICD10 hierarchy
     ICD = []
     k = 0
     for i,j in icd.iterrows():
@@ -65,22 +55,14 @@ if __name__ == "__main__":
         return group
 
 
-    ## use this as base file
-    df = pd.read_csv('../bucket/Readmission_30days/Amara/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded.csv') #base cohort file
-    print(len(df),len(df_icd))
-    sys.stdout.flush()
-    ed_idx = min(ed_idx, len(df))
-    df = df.iloc[st_idx:ed_idx].copy()
-    df_icd = df_icd.loc[df_icd.PATIENT_DK.isin(df.PATIENT_DK_x.unique())]
-    print(len(df),len(df_icd))
-    sys.stdout.flush()
+    
     df['ADMISSION_DTM'] = pd.to_datetime(df['ADMISSION_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
     df_icd['DIAGNOSIS_DTM'] = pd.to_datetime(df_icd['DIAGNOSIS_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
 
-    ## CPT Featurization Temporal - by days
+    
     df_all = pd.DataFrame(columns = df.columns)
     pd.set_option('mode.chained_assignment', None)
     idx=0
@@ -129,8 +111,4 @@ if __name__ == "__main__":
             idx+=1         
         if i%100==0:
             print('Count:', i, idx)
-        if i%1000==0:
-            df_all.to_csv('../bucket/Readmission_30days/Amara/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded_ICD10_daily_'+suffix+'.csv')
-            sys.stdout.flush()
-
-    df_all.to_csv('../bucket/Readmission_30days/Amara/Readmission_Data/Readmission_label_Demo_processed_w_xray_loc_expanded_ICD10_daily_'+suffix+'.csv')
+    return df_all
