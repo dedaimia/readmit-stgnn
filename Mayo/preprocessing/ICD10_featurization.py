@@ -70,7 +70,7 @@ def icd_featurization(df, df_icd):
     for k in features:
         df_all[k] = 0
     for i,j in df.iterrows():
-        pid = df.at[i, 'PATIENT_DK_x']
+        pid = df.at[i, 'PATIENT_DK']
         admit_dt = df.at[i, 'ADMISSION_DTM']
         discharge_dt = df.at[i, 'DISCHARGE_DTM']
         invalid =df.at[i, 'INVALID']

@@ -19,7 +19,7 @@ def demo_featurization(df, df_demo):
     """     
     df_demo = df_demo.drop_duplicates(subset=['PATIENT_DK']) #drop duplicate patients, will stop row explosion in the next step
 
-    df = df.merge(df_demo[['PATIENT_DK', 'PATIENT_RACE_NAME', 'PATIENT_GEBDER_NAME', 'PATIENT_ETHNICITY_NAME', 'PATIENT_BIRTH_DATE']], on = 'PATIENT_DK', how='left' )
+    df = df.merge(df_demo[['PATIENT_DK', 'PATIENT_RACE_NAME', 'PATIENT_GENDER_NAME', 'PATIENT_ETHNICITY_NAME', 'PATIENT_BIRTH_DATE']], on = 'PATIENT_DK', how='left' )
 
     #RACE Preparation
     races = df.PATIENT_RACE_NAME.unique()
