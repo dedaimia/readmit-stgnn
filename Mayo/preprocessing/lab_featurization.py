@@ -100,7 +100,7 @@ def lab_featurization(df, df_lab):
             ed = st+timedelta(hours=24)
             temp = df_lab.loc[(df_lab.PATIENT_DK==pid) & (df_lab.LAB_COLLECTION_DTM>=st)
                         & (df_lab.LAB_COLLECTION_DTM<=ed)]
-            df_all.at[idx, 'Day Nbr'] = day_no
+            df_all.at[idx, 'Day_Number'] = day_no
             if len(temp)>0:
                 #print(i, 'Day:', day_no)
                 for c in temp.LAB_SUBTYPE_CODE.unique():
@@ -114,7 +114,7 @@ def lab_featurization(df, df_lab):
         ed = discharge_dt
         temp = df_lab.loc[(df_lab.PATIENT_DK==pid) & (df_lab.LAB_COLLECTION_DTM>=st)
                         & (df_lab.LAB_COLLECTION_DTM<=ed)]
-        df_all.at[idx, 'Day Nbr'] = day_no
+        df_all.at[idx, 'Day_Number'] = day_no
         if len(temp)>0:
             #print(i, 'Day:', day_no)
             for c in temp.LAB_SUBTYPE_CODE.unique():

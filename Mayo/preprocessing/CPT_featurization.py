@@ -14,7 +14,7 @@ def cpt_featurization(df, df_cpt):
     df: selected cohort file, one hospitalization per row
     df_cpt: EDTWH_FACT_PROCEDURES file from SQL query - one cpt recorded per row
 
-    df_all: return file with one hospitalization per row with row containing all cpt subgroups for that hospitalization
+    df_all: return file with one hospitalization per row with row containing all cpt SUBGROUP for that hospitalization
     """     
 
     dfcpt_groups = pd.read_csv("CPT_group_structure.csv") #cpt code structure
@@ -55,39 +55,39 @@ def cpt_featurization(df, df_cpt):
         pid = df.at[i, 'PATIENT_DK']
         admit_dt = df.at[i, 'ADMISSION_DTM']
         discharge_dt = df.at[i, 'DISCHARGE_DTM']
-        invalid =df.at[i, 'INVALID']
+        
         for c in columns:
             df_all.at[idx, c] = df.at[i, c]
-        if invalid==False:
-            st = admit_dt
-            day_no = 1
-            while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
-                ed = st+timedelta(hours=24)
-                temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
-                             & (df_cpt.PROCEDURE_DTM<=ed)]
-                df_all.at[idx, 'Shift Nbr'] = day_no
-                temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
-                d = temp.PROCEDURE_CODE.value_counts()
-                if len(temp)>0:
-                    temp2['SUBGROUPS'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
-                    for ii, jj in temp2.iterrows():
-                        df_all.at[idx, temp2.at[ii, 'SUBGROUPS']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
-                idx+=1
-                day_no+=1
-                st = ed
 
-            ed = discharge_dt
+        st = admit_dt
+        day_no = 1
+        while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
+            ed = st+timedelta(hours=24)
             temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
-                             & (df_cpt.PROCEDURE_DTM<=ed)]
-            df_all.at[idx, 'Shift Nbr'] = day_no
+                            & (df_cpt.PROCEDURE_DTM<=ed)]
+            df_all.at[idx, 'Day_Number'] = day_no
             temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
             d = temp.PROCEDURE_CODE.value_counts()
             if len(temp)>0:
-                temp2['SUBGROUPS'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
+                temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
                 for ii, jj in temp2.iterrows():
-                    df_all.at[idx, temp2.at[ii, 'SUBGROUPS']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
-            print(i, 'Shifts:', day_no)
-            idx+=1         
+                    df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
+            idx+=1
+            day_no+=1
+            st = ed
+
+        ed = discharge_dt
+        temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
+                            & (df_cpt.PROCEDURE_DTM<=ed)]
+        df_all.at[idx, 'Day_Number'] = day_no
+        temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
+        d = temp.PROCEDURE_CODE.value_counts()
+        if len(temp)>0:
+            temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
+            for ii, jj in temp2.iterrows():
+                df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
+        print(i, 'Days:', day_no)
+        idx+=1         
         if i%100==0:
             print('Count:', i, idx)
     return df_all

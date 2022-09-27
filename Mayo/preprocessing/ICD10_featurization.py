@@ -14,7 +14,7 @@ def icd_featurization(df, df_icd):
     df: selected cohort file, one hospitalization per row
     df_icd: EDTWH_FACT_DIAGNOSES file from SQL query - one icd code recorded per row
 
-    df_all: return file with one hospitalization per row with row containing all icd subgroups for that hospitalization
+    df_all: return file with one hospitalization per row with row containing all icd SUBGROUP for that hospitalization
     """     
 
     icd = pd.read_csv(ICD10_Groups.csv') #ICD10 hierarchy
@@ -76,39 +76,39 @@ def icd_featurization(df, df_icd):
         invalid =df.at[i, 'INVALID']
         for c in df.columns:
             df_all.at[idx, c] = df.at[i, c]
-        if invalid==False:
-            st = admit_dt
-            day_no = 1
-            while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
-                ed = st+timedelta(hours=24)
-                temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
-                             & (df_icd.DIAGNOSIS_DTM<=ed)]
-                df_all.at[idx, 'Shift Nbr'] = day_no
-                if len(temp)>0:
-                    print(i, 'Shift:', day_no)
-                    temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
-                    d = temp.DIAGNOSIS_CODE.value_counts()
-                    temp2['SUBGROUPS'] = temp2.DIAGNOSIS_CODE.apply(find_group) 
-                    for ii, jj in temp2.iterrows():
-                        df_all.at[idx, temp2.at[ii, 'SUBGROUPS']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
-                idx+=1
-                day_no+=1
-                st = ed
 
-            ed = discharge_dt
+        st = admit_dt
+        day_no = 1
+        while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
+            ed = st+timedelta(hours=24)
             temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
-                             & (df_icd.DIAGNOSIS_DTM<=ed)]
-            df_all.at[idx, 'Shift Nbr'] = day_no
+                            & (df_icd.DIAGNOSIS_DTM<=ed)]
+            df_all.at[idx, 'Day_Number'] = day_no
             if len(temp)>0:
                 print(i, 'Shift:', day_no)
-                temp['SUBGROUPS'] = temp.DIAGNOSIS_CODE.apply(find_group)           
                 temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
                 d = temp.DIAGNOSIS_CODE.value_counts()
-                temp2['SUBGROUPS'] = temp2.DIAGNOSIS_CODE.apply(find_group) 
+                temp2['SUBGROUP'] = temp2.DIAGNOSIS_CODE.apply(find_group) 
                 for ii, jj in temp2.iterrows():
-                    df_all.at[idx, temp2.at[ii, 'SUBGROUPS']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
-            print(i, 'Shifts:', day_no)
-            idx+=1         
+                    df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
+            idx+=1
+            day_no+=1
+            st = ed
+
+        ed = discharge_dt
+        temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
+                            & (df_icd.DIAGNOSIS_DTM<=ed)]
+        df_all.at[idx, 'Day_Number'] = day_no
+        if len(temp)>0:
+            print(i, 'Shift:', day_no)
+            temp['SUBGROUP'] = temp.DIAGNOSIS_CODE.apply(find_group)           
+            temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
+            d = temp.DIAGNOSIS_CODE.value_counts()
+            temp2['SUBGROUP'] = temp2.DIAGNOSIS_CODE.apply(find_group) 
+            for ii, jj in temp2.iterrows():
+                df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
+        print(i, 'Days:', day_no)
+        idx+=1         
         if i%100==0:
             print('Count:', i, idx)
     return df_all

@@ -59,40 +59,38 @@ def med_featurization(df, df_med):
        pid = df.at[i, 'PATIENT_DK']
        admit_dt = df.at[i, 'ADMISSION_DTM']
        discharge_dt = df.at[i, 'DISCHARGE_DTM']
-       invalid =df.at[i, 'INVALID']
        
-       if invalid==False:
-           st = admit_dt
-           day_no = 1
-           while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
-               ed = st+timedelta(hours=24)
-               temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
-                            & (df_med.ADMINISTERED_DTM<=ed)]
-               df_all.at[idx, 'Day Nbr'] = day_no
-               for c in columns:
-                   df_all.at[idx, c] = df.at[i, c]
-           
-               if len(temp)>0:
-                   print(i, 'Day:', day_no)
-                   for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
-                       temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
-                       df_all.at[idx, c] = len(temp2)
-               idx+=1
-               day_no+=1
-               st = ed
-          
-           ed = discharge_dt
-           temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
-                            & (df_med.ADMINISTERED_DTM<=ed)]
-           df_all.at[idx, 'Day Nbr'] = day_no
-           for c in columns:
-               df_all.at[idx, c] = df.at[i, c]
-           if len(temp)>0:
-               print(i, 'Day:', day_no)
-               for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
-                       temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
-                       df_all.at[idx, c] = len(temp2)
-           idx+=1
+        st = admit_dt
+        day_no = 1
+        while st+timedelta(hours=24) < discharge_dt+timedelta(hours=12):
+            ed = st+timedelta(hours=24)
+            temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
+                        & (df_med.ADMINISTERED_DTM<=ed)]
+            df_all.at[idx, 'Day_Number'] = day_no
+            for c in columns:
+                df_all.at[idx, c] = df.at[i, c]
+        
+            if len(temp)>0:
+                print(i, 'Day:', day_no)
+                for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
+                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
+                    df_all.at[idx, c] = len(temp2)
+            idx+=1
+            day_no+=1
+            st = ed
+        
+        ed = discharge_dt
+        temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
+                        & (df_med.ADMINISTERED_DTM<=ed)]
+        df_all.at[idx, 'Day_Number'] = day_no
+        for c in columns:
+            df_all.at[idx, c] = df.at[i, c]
+        if len(temp)>0:
+            print(i, 'Day:', day_no)
+            for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
+                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
+                    df_all.at[idx, c] = len(temp2)
+        idx+=1
        sys.stdout.flush()         
        if i%100==0:
            print('Count:', i, idx)
