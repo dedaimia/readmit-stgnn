@@ -101,6 +101,7 @@ def lab_featurization(df, df_lab):
             temp = df_lab.loc[(df_lab.PATIENT_DK==pid) & (df_lab.LAB_COLLECTION_DTM>=st)
                         & (df_lab.LAB_COLLECTION_DTM<=ed)]
             df_all.at[idx, 'Day_Number'] = day_no
+            df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
             if len(temp)>0:
                 #print(i, 'Day:', day_no)
                 for c in temp.LAB_SUBTYPE_CODE.unique():
@@ -115,6 +116,7 @@ def lab_featurization(df, df_lab):
         temp = df_lab.loc[(df_lab.PATIENT_DK==pid) & (df_lab.LAB_COLLECTION_DTM>=st)
                         & (df_lab.LAB_COLLECTION_DTM<=ed)]
         df_all.at[idx, 'Day_Number'] = day_no
+        df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         if len(temp)>0:
             #print(i, 'Day:', day_no)
             for c in temp.LAB_SUBTYPE_CODE.unique():

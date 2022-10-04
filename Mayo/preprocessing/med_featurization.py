@@ -67,6 +67,7 @@ def med_featurization(df, df_med):
             temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
                         & (df_med.ADMINISTERED_DTM<=ed)]
             df_all.at[idx, 'Day_Number'] = day_no
+            df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
             for c in columns:
                 df_all.at[idx, c] = df.at[i, c]
         
@@ -83,6 +84,7 @@ def med_featurization(df, df_med):
         temp = df_med.loc[(df_med.PATIENT_DK==pid) & (df_med.ADMINISTERED_DTM>=st)
                         & (df_med.ADMINISTERED_DTM<=ed)]
         df_all.at[idx, 'Day_Number'] = day_no
+        df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         for c in columns:
             df_all.at[idx, c] = df.at[i, c]
         if len(temp)>0:

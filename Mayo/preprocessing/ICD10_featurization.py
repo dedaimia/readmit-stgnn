@@ -84,6 +84,7 @@ def icd_featurization(df, df_icd):
             temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
                             & (df_icd.DIAGNOSIS_DTM<=ed)]
             df_all.at[idx, 'Day_Number'] = day_no
+            df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
             if len(temp)>0:
                 print(i, 'Shift:', day_no)
                 temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
@@ -99,6 +100,7 @@ def icd_featurization(df, df_icd):
         temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
                             & (df_icd.DIAGNOSIS_DTM<=ed)]
         df_all.at[idx, 'Day_Number'] = day_no
+        df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         if len(temp)>0:
             print(i, 'Shift:', day_no)
             temp['SUBGROUP'] = temp.DIAGNOSIS_CODE.apply(find_group)           

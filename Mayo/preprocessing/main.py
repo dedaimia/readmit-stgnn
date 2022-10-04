@@ -15,6 +15,7 @@ from ICD10_featurization import icd_featurization
 from lab_featurization import lab_featurization
 from med_featurization import med_featurization
 
+import  preprocess_ehr_Mayo
 header_raw = '../ehr/raw/'
 header_proc = '../ehr/processed/'
 def main():
@@ -58,6 +59,10 @@ def main():
     df_med= pd.read_csv(header_raw+'EDTWH_FACT_MEDICATIONS.csv') ## medication file from SQL query
     df_med = med_featurization(df, df_med)
     df_med.to_csv(header_proc+'cohort_file_w_med.csv')
+
+    print('processing EHR for sequence creation ...')
+    sys.stdout.flush()
+    preprocess_ehr_Mayo.main()
 
 if __name__ == "__main__":
     main()

@@ -66,6 +66,7 @@ def cpt_featurization(df, df_cpt):
             temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
                             & (df_cpt.PROCEDURE_DTM<=ed)]
             df_all.at[idx, 'Day_Number'] = day_no
+            df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
             temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
             d = temp.PROCEDURE_CODE.value_counts()
             if len(temp)>0:
@@ -80,6 +81,7 @@ def cpt_featurization(df, df_cpt):
         temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
                             & (df_cpt.PROCEDURE_DTM<=ed)]
         df_all.at[idx, 'Day_Number'] = day_no
+        df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
         d = temp.PROCEDURE_CODE.value_counts()
         if len(temp)>0:
