@@ -636,7 +636,7 @@ def ehr2sequence(preproc_dict, df_demo, by="day"):
 
     # arrange X by day or by cxr
     feat_dict = {}
-    for node_name, cxr_files in tqdm(node_included_files.items()):
+    for node_name in df["node_name"].unique():#, cxr_files in tqdm(node_included_files.items()):
         # print(node_name)
         ehr_row = df[df["node_name"] == node_name]
         curr_admit = ehr_row["ADMISSION_DTM"].values[0]
