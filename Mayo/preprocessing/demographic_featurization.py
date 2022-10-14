@@ -62,10 +62,10 @@ def demo_featurization(df, df_demo):
     df.PATIENT_ETHNICITY_NAME.value_counts()
 
     ## AGE PREP
-    df.ADMISSION_DTM = pd.to_datetime(df.ADMISSION_DTM, errors='coerce')
+    df.ADMIT_DTM = pd.to_datetime(df.ADMIT_DTM, errors='coerce')
     df.PATIENT_BIRTH_DATE = pd.to_datetime(df.PATIENT_BIRTH_DATE, errors='coerce')
 
-    df['PATIENT_AGE'] = (df['ADMISSION_DTM'] - df['PATIENT_BIRTH_DATE']).astype('<m8[Y]')
+    df['PATIENT_AGE'] = (df['ADMIT_DTM'] - df['PATIENT_BIRTH_DATE']).astype('<m8[Y]')
 
     def to_bins(x):
         if np.isnan(x):

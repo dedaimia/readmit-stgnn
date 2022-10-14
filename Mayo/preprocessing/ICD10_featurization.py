@@ -17,7 +17,7 @@ def icd_featurization(df, df_icd):
     df_all: return file with one hospitalization per row with row containing all icd SUBGROUP for that hospitalization
     """     
 
-    icd = pd.read_csv(ICD10_Groups.csv') #ICD10 hierarchy
+    icd = pd.read_csv('ICD10_Groups.csv') #ICD10 hierarchy
     ICD = []
     k = 0
     for i,j in icd.iterrows():
@@ -34,6 +34,7 @@ def icd_featurization(df, df_icd):
         group = ''
         letter = code[0]
         number = code[1:].split('.')[0]
+        print(code, type(code), letter, number, end='\t')
         if number.isnumeric():
             number = (float(number))
             icd_sel = icd.loc[icd.SUBGROUP.str.startswith(letter)].copy()
@@ -52,17 +53,18 @@ def icd_featurization(df, df_icd):
                 group = icd_sel.at[icd_sel.index[0], 'SUBGROUP']
             else:
                 group = 'UNKNOWN'
+        print(group)
         return group
 
 
     
-    df['ADMISSION_DTM'] = pd.to_datetime(df['ADMISSION_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
+    df['ADMIT_DTM'] = pd.to_datetime(df['ADMIT_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
     df_icd['DIAGNOSIS_DTM'] = pd.to_datetime(df_icd['DIAGNOSIS_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
 
-    
+    columns = [c for c in df.columns if c.startswith('Unnamed')==False]
     df_all = pd.DataFrame(columns = df.columns)
     pd.set_option('mode.chained_assignment', None)
     idx=0
@@ -71,11 +73,8 @@ def icd_featurization(df, df_icd):
         df_all[k] = 0
     for i,j in df.iterrows():
         pid = df.at[i, 'PATIENT_DK']
-        admit_dt = df.at[i, 'ADMISSION_DTM']
+        admit_dt = df.at[i, 'ADMIT_DTM']
         discharge_dt = df.at[i, 'DISCHARGE_DTM']
-        invalid =df.at[i, 'INVALID']
-        for c in df.columns:
-            df_all.at[idx, c] = df.at[i, c]
 
         st = admit_dt
         day_no = 1
@@ -83,8 +82,11 @@ def icd_featurization(df, df_icd):
             ed = st+timedelta(hours=24)
             temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
                             & (df_icd.DIAGNOSIS_DTM<=ed)]
+            for c in df.columns:
+                df_all.at[idx, c] = df.at[i, c]
             df_all.at[idx, 'Day_Number'] = day_no
             df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
+            print(len(temp))
             if len(temp)>0:
                 print(i, 'Shift:', day_no)
                 temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
@@ -99,6 +101,8 @@ def icd_featurization(df, df_icd):
         ed = discharge_dt
         temp = df_icd.loc[(df_icd.PATIENT_DK==pid) & (df_icd.DIAGNOSIS_DTM>=st)
                             & (df_icd.DIAGNOSIS_DTM<=ed)]
+        for c in df.columns:
+            df_all.at[idx, c] = df.at[i, c]
         df_all.at[idx, 'Day_Number'] = day_no
         df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         if len(temp)>0:
@@ -107,8 +111,10 @@ def icd_featurization(df, df_icd):
             temp2 = temp.drop_duplicates(subset=['DIAGNOSIS_CODE'])
             d = temp.DIAGNOSIS_CODE.value_counts()
             temp2['SUBGROUP'] = temp2.DIAGNOSIS_CODE.apply(find_group) 
-            for ii, jj in temp2.iterrows():
-                df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
+            for s in temp2.SUBGROUP.unique():
+                df_all.at[idx, s] = len(temp.loc[temp.DIAGNOSIS_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['DIAGNOSIS_CODE'].unique())])
+            # for ii, jj in temp2.iterrows():
+            #     df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'DIAGNOSIS_CODE']]
         print(i, 'Days:', day_no)
         idx+=1         
         if i%100==0:

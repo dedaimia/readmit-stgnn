@@ -24,6 +24,7 @@ def cpt_featurization(df, df_cpt):
 
     def to_cpt_group(x):
         out=None
+        # print(x, type(x), end='\t')
         if type(x)==str and x.isnumeric():
             x = int(x)
             temp = dfcpt_groups.loc[(dfcpt_groups['Low']<=x) & (dfcpt_groups['High']>=x) & (dfcpt_groups['Modifier'].isna())]
@@ -35,11 +36,12 @@ def cpt_featurization(df, df_cpt):
             temp = dfcpt_groups.loc[(dfcpt_groups['Low']<=x) & (dfcpt_groups['High']>=x) & (dfcpt_groups['Modifier']==m)]
             if len(temp)>0:
                 out = temp.at[temp.index[0], 'Subgroup']
+        # print(out)
         return out
 
 
     
-    df['ADMISSION_DTM'] = pd.to_datetime(df['ADMISSION_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
+    df['ADMIT_DTM'] = pd.to_datetime(df['ADMIT_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
 
     df_cpt['PROCEDURE_DTM'] = pd.to_datetime(df_cpt['PROCEDURE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
@@ -47,17 +49,15 @@ def cpt_featurization(df, df_cpt):
 
     features = dfcpt_groups.Subgroup.unique()
     pd.set_option('mode.chained_assignment', None)
+    columns = [c for c in df.columns if c.startswith('Unnamed')==False]
     df_all = pd.DataFrame(columns = columns)
     idx = 0
     for k in features:
         df_all[k] = 0
     for i,j in df.iterrows():
         pid = df.at[i, 'PATIENT_DK']
-        admit_dt = df.at[i, 'ADMISSION_DTM']
+        admit_dt = df.at[i, 'ADMIT_DTM']
         discharge_dt = df.at[i, 'DISCHARGE_DTM']
-        
-        for c in columns:
-            df_all.at[idx, c] = df.at[i, c]
 
         st = admit_dt
         day_no = 1
@@ -65,6 +65,8 @@ def cpt_featurization(df, df_cpt):
             ed = st+timedelta(hours=24)
             temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
                             & (df_cpt.PROCEDURE_DTM<=ed)]
+            for c in columns:
+                df_all.at[idx, c] = df.at[i, c]
             df_all.at[idx, 'Day_Number'] = day_no
             df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
             temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
@@ -80,14 +82,18 @@ def cpt_featurization(df, df_cpt):
         ed = discharge_dt
         temp = df_cpt.loc[(df_cpt.PATIENT_DK==pid) & (df_cpt.PROCEDURE_DTM>=st)
                             & (df_cpt.PROCEDURE_DTM<=ed)]
+        for c in columns:
+                df_all.at[idx, c] = df.at[i, c]
         df_all.at[idx, 'Day_Number'] = day_no
         df_all.at[idx, 'Date'] = admit_dt+timedelta(days=day_no-1)
         temp2 = temp.drop_duplicates(subset=['PROCEDURE_CODE'])
         d = temp.PROCEDURE_CODE.value_counts()
         if len(temp)>0:
             temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
-            for ii, jj in temp2.iterrows():
-                df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
+            for s in temp2.SUBGROUP.unique():
+                df_all.at[idx, s] = len(temp.loc[temp.PROCEDURE_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['PROCEDURE_CODE'].unique())])
+                # df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = temp2.loc[]
+                # d[temp2.at[ii, 'PROCEDURE_CODE']]
         print(i, 'Days:', day_no)
         idx+=1         
         if i%100==0:
