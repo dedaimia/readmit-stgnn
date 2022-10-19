@@ -125,27 +125,39 @@ def main():
     # df_combined = df_combined.loc[:, ~df_combined.columns.duplicated()]
     # df_combined.to_csv(header_proc+'ehr_combined.csv')
 
-    print('processing EHR for sequence creation ...')
-    sys.stdout.flush()
+    # print('processing EHR for sequence creation ...')
+    # sys.stdout.flush()
+    # df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
+    # preprocess_ehr_Mayo.main(df_combined)
+
+    # print('combining sequences with pre-made sequences')
+
+    # fname = '../ehr/processed/ehr_preprocessed_seq_by_day_tabnet'
+    # dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
+    # dct = pkl.load(open(fname+'.pkl', 'rb'))
+    # for k in dct['feat_dict'].keys():
+    #     dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
+    # pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
+
+    # fname = '../ehr/processed/ehr_preprocessed_seq_by_day_gnn'
+    # dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
+    # dct = pkl.load(open(fname+'.pkl', 'rb'))
+    # for k in dct['feat_dict'].keys():
+    #     dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
+    # pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
+
+    print('adding rows to base cohort file')
+    df = pd.read_csv(header_proc+'cohort_file_org.csv')
     df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
-    preprocess_ehr_Mayo.main(df_combined)
-
-    print('combining sequences with pre-made sequences')
-
-    fname = '../ehr/processed/ehr_preprocessed_seq_by_day_tabnet'
-    dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
-    dct = pkl.load(open(fname+'.pkl', 'rb'))
-    for k in dct['feat_dict'].keys():
-        dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
-    pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
-
-    fname = '../ehr/processed/ehr_preprocessed_seq_by_day_gnn'
-    dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
-    dct = pkl.load(open(fname+'.pkl', 'rb'))
-    for k in dct['feat_dict'].keys():
-        dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
-    pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
-
+    df_combined['split'] = "test"
+    df_combined['ADMISSION_DTM'] = df_combined["ADMIT_DTM"].copy()
+    df_combined['copied_PNG_location'] = "dummy.png"
+    df_combined['Study_DTM'] = df_combined["ADMIT_DTM"].copy()
+    df_combined['Discharge2DeathDays'] = 100000
+    df_combined['Gap in months'] = 100000
+    cols = list(set(df.columns).intersection(set(df_combined.columns)))
+    df = pd.concat([df, df_combined[cols]])
+    df.to_csv(header_proc+'cohort_file_appended.csv')
 
 
 if __name__ == "__main__":
