@@ -29,16 +29,20 @@ def med_featurization(df, df_med):
     med_status_sel = df_med_status_sel.Status.values
     
     df_med = df_med.loc[(df_med.PATIENT_DK.isin(df.PATIENT_DK.unique())) & (df_med.ADMINISTERED_STATUS.isin(med_status_sel))] #only actually administered medications, not just prescribed, mathcign cohort patients
-    
+    df_med = df_med.dropna(subset=['MED_THERAPEUTIC_CLASS_CODE'])
     print('Meds file length:', len(df_med))
 
     
     
     meds = pd.read_csv('med_selected.csv')
-    meds = meds.dropna(subset=['MED_THERAPEUTIC_CLASS_DESCRIPTION'])
-    sel_meds = meds.MED_THERAPEUTIC_CLASS_DESCRIPTION.values
+    meds = meds.dropna(subset=['MED_THERAPEUTIC_CLASS_CODE'])
+    sel_meds = meds.MED_THERAPEUTIC_CLASS_CODE.values
     print('selected meds:', len(meds))
-    df_med = df_med.loc[df_med.MED_THERAPEUTIC_CLASS_DESCRIPTION.isin(sel_meds)]  #keep only selected therapeutic classes of meds
+    med_dict = {} #dict to map code to description
+    for m in sel_meds:
+        med_dict[m] = meds.loc[meds.MED_THERAPEUTIC_CLASS_CODE==m]['MED_THERAPEUTIC_CLASS_DESCRIPTION'].values[0]
+
+    df_med = df_med.loc[df_med.MED_THERAPEUTIC_CLASS_CODE.isin(sel_meds)]  #keep only selected therapeutic classes of meds
     print('meds file length:', len(df_med))
     sys.stdout.flush()
     
@@ -50,7 +54,7 @@ def med_featurization(df, df_med):
     df_all = pd.DataFrame(columns = columns)
     pd.set_option('mode.chained_assignment', None)
     
-    features = sel_meds
+    features = list(med_dict.values())
     for k in features:
        df_all[k] = 0
     
@@ -74,10 +78,9 @@ def med_featurization(df, df_med):
                 df_all.at[idx, c] = df.at[i, c]
 
             if len(temp)>0:
-                print(i, 'Day:', day_no)
-                for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
-                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
-                    df_all.at[idx, c] = len(temp2)
+                for c in temp.MED_THERAPEUTIC_CLASS_CODE.unique():
+                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_CODE==c]
+                    df_all.at[idx, med_dict[c]] = len(temp2)
             idx+=1
             day_no+=1
             st = ed
@@ -92,11 +95,11 @@ def med_featurization(df, df_med):
         for c in columns:
             df_all.at[idx, c] = df.at[i, c]
         if len(temp)>0:
-            print(i, 'Day:', day_no)
-            for c in temp.MED_THERAPEUTIC_CLASS_DESCRIPTION.unique():
-                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_DESCRIPTION==c]
-                    df_all.at[idx, c] = len(temp2)
+            for c in temp.MED_THERAPEUTIC_CLASS_CODE.unique():
+                    temp2 = temp.loc[temp.MED_THERAPEUTIC_CLASS_CODE==c]
+                    df_all.at[idx, med_dict[c]] = len(temp2)
         idx+=1
+        print(i, 'Days:', day_no)
         sys.stdout.flush()         
         if i%100==0:
             print('Count:', i, idx)

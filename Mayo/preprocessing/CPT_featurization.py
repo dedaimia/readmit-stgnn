@@ -73,8 +73,8 @@ def cpt_featurization(df, df_cpt):
             d = temp.PROCEDURE_CODE.value_counts()
             if len(temp)>0:
                 temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
-                for ii, jj in temp2.iterrows():
-                    df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = d[temp2.at[ii, 'PROCEDURE_CODE']]
+                for s in temp2.SUBGROUP.unique():
+                    df_all.at[idx, s] = len(temp.loc[temp.PROCEDURE_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['PROCEDURE_CODE'].unique())])
             idx+=1
             day_no+=1
             st = ed
@@ -92,8 +92,7 @@ def cpt_featurization(df, df_cpt):
             temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
             for s in temp2.SUBGROUP.unique():
                 df_all.at[idx, s] = len(temp.loc[temp.PROCEDURE_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['PROCEDURE_CODE'].unique())])
-                # df_all.at[idx, temp2.at[ii, 'SUBGROUP']] = temp2.loc[]
-                # d[temp2.at[ii, 'PROCEDURE_CODE']]
+
         print(i, 'Days:', day_no)
         idx+=1         
         if i%100==0:
