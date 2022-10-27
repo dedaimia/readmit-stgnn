@@ -73,6 +73,7 @@ def cpt_featurization(df, df_cpt):
             d = temp.PROCEDURE_CODE.value_counts()
             if len(temp)>0:
                 temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
+                temp2 = temp2.dropna(subset=['SUBGROUP'])
                 for s in temp2.SUBGROUP.unique():
                     df_all.at[idx, s] = len(temp.loc[temp.PROCEDURE_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['PROCEDURE_CODE'].unique())])
             idx+=1
@@ -90,6 +91,7 @@ def cpt_featurization(df, df_cpt):
         d = temp.PROCEDURE_CODE.value_counts()
         if len(temp)>0:
             temp2['SUBGROUP'] = temp2.PROCEDURE_CODE.apply(to_cpt_group) 
+            temp2 = temp2.dropna(subset=['SUBGROUP'])
             for s in temp2.SUBGROUP.unique():
                 df_all.at[idx, s] = len(temp.loc[temp.PROCEDURE_CODE.isin(temp2.loc[temp2.SUBGROUP==s]['PROCEDURE_CODE'].unique())])
 

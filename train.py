@@ -107,7 +107,7 @@ def evaluate(
 def main(args):
     print('in train.py')
     sys.stdout.flush()
-    args.cuda = False#torch.cuda.is_available()
+    args.cuda = torch.cuda.is_available()
     device = "cuda" if args.cuda else "cpu"
     print("Using device", device)
 
@@ -484,7 +484,7 @@ def main(args):
             **config
         )
 
-    model.to(device)
+    
 
     # define optimizer
     optimizer = torch.optim.Adam(
@@ -499,7 +499,8 @@ def main(args):
         model = utils.load_model_checkpoint(
             args.load_model_path, model
         )
-
+    
+    model.to(device)
     # count params
     params = utils.count_parameters(model)
     logger.info("Trainable parameters: {}".format(params))
