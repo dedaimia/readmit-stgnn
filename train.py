@@ -128,8 +128,13 @@ def main(args):
     logger.info("Args: {}".format(dumps(vars(args), indent=4, sort_keys=True)))
 
     # wandb
-    wandb.init(project="covid-gnn", entity="siyitang")
-    wandb.init(config=args)
+    if('wandb_mode' in args):
+        wandb.init(project="covid-gnn", entity="siyitang", mode=args.wandb_mode)
+        wandb.init(config=args, mode=args.wandb_mode)
+    else:
+        wandb.init(project="covid-gnn", entity="siyitang")
+        wandb.init(config=args)
+
     wandb.run.name = "{}_{}_edge_{}_edgeThresh_{}_hidden={}_rnnLayers={}_{}".format(
         args.model_name,
         args.g_conv,

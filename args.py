@@ -726,6 +726,12 @@ def get_args():
         default=False,
         help="Whether to attend to node's neighbors in graph transformer.",
     )
+    parser.add_argument(
+        "--wandb_mode",
+        type=str,
+        choices=("offline", "disabled"),
+        help="Wandb mode - use 'offline' or 'disabled' to avoid an interactive login prompt.  Do not set to run wandb online",
+    )
     #### End of GraphTransformer args ####
 
     #### BGRL args ####
