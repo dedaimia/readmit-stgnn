@@ -9,6 +9,8 @@ import shutil
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
+script_path = os.path.dirname(os.path.realpath(__file__))
+
 def cpt_featurization(df, df_cpt):
     """
     df: selected cohort file, one hospitalization per row
@@ -17,7 +19,7 @@ def cpt_featurization(df, df_cpt):
     df_all: return file with one hospitalization per row with row containing all cpt SUBGROUP for that hospitalization
     """     
 
-    dfcpt_groups = pd.read_csv("CPT_group_structure.csv") #cpt code structure
+    dfcpt_groups = pd.read_csv(os.path.join(script_path, "CPT_group_structure.csv")) #cpt code structure
     print(len(dfcpt_groups))
     sys.stdout.flush()
 

@@ -13,7 +13,7 @@ print('all imported')
 sys.stdout.flush()
 
    
-
+script_path = os.path.dirname(os.path.realpath(__file__))
 
 def lab_featurization(df, df_lab):
     """
@@ -32,7 +32,7 @@ def lab_featurization(df, df_lab):
     df_lab = df_lab.loc[df_lab.PATIENT_DK.isin(df.PATIENT_DK.values)]  # keep only lab tests belonging to cohort patients
 
     
-    df_sel_labs = pd.read_csv('selected_labs_expanded_BP.csv', header=None)
+    df_sel_labs = pd.read_csv(os.path.join(script_path, 'selected_labs_expanded_BP.csv'), header=None)
     labs = df_sel_labs[1].values[1:]
     print('selected labs:', len(labs))
     df_lab = df_lab.loc[df_lab.LAB_SUBTYPE_CODE.isin(labs)]   # keep only lab tests of interest - recorded in selected_labs_expanded_BP

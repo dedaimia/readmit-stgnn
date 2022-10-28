@@ -44,7 +44,7 @@ ALL_COLS = ['PATIENT_AGE_NEW', 'PATIENT_RACE_NAME', 'PATIENT_GENDER_NAME', 'PATI
 def main(args):
     header_raw = args.input_folder
     header_proc = args.output_folder
-    
+    header_orig = args.orig_folder
     
     print('building cohort ....')
     sys.stdout.flush()
@@ -132,26 +132,26 @@ def main(args):
     print('processing EHR for sequence creation ...')
     sys.stdout.flush()
     df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
-    preprocess_ehr_Mayo.main(df_combined)
+    preprocess_ehr_Mayo.main(df_combined, header_proc)
 
     print('combining sequences with pre-made sequences')
 
-    fname = '../ehr/processed/ehr_preprocessed_seq_by_day_tabnet'
-    dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
-    dct = pkl.load(open(fname+'.pkl', 'rb'))
+    fname = 'ehr_preprocessed_seq_by_day_tabnet'
+    dct_org = pkl.load(open(header_orig+fname+'_org.pkl', 'rb'))
+    dct = pkl.load(open(header_proc+fname+'.pkl', 'rb'))
     for k in dct['feat_dict'].keys():
         dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
-    pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
+    pkl.dump(dct_org, open(header_proc+fname+'_appended.pkl', 'wb'))
 
-    fname = '../ehr/processed/ehr_preprocessed_seq_by_day_gnn'
-    dct_org = pkl.load(open(fname+'_org.pkl', 'rb'))
-    dct = pkl.load(open(fname+'.pkl', 'rb'))
+    fname =  'ehr_preprocessed_seq_by_day_gnn'
+    dct_org = pkl.load(open(header_orig+fname+'_org.pkl', 'rb'))
+    dct = pkl.load(open(header_proc+fname+'.pkl', 'rb'))
     for k in dct['feat_dict'].keys():
         dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
-    pkl.dump(dct_org, open(fname+'_appended.pkl', 'wb'))
+    pkl.dump(dct_org, open(header_proc+fname+'_appended.pkl', 'wb'))
 
     print('adding rows to base cohort file')
-    df = pd.read_csv(header_proc+'cohort_file_org.csv')
+    df = pd.read_csv(header_orig+'cohort_file_org.csv')
     mask = df['split']=='test'
     df['split'][mask] = 'val'
     df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
@@ -170,8 +170,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--input_folder', type=str, required=False, default=default_header_raw, 
            help='Folder containing raw input files.  Can be a local path or cloud storage gs:// uri')
-    parser.add_argument('--output_folder', type=str, required=False, default=default_header_raw, 
-          help='Folder where preprocessed files will be written.  Can be a local path or cloud storage gs:// uri')
+    parser.add_argument('--output_folder', type=str, required=False, default=default_header_proc, 
+          help='Folder where preprocessed files will be written.  Can be a local path or cloud storage gs:// uri.  May also already contain ehr_preprocessed_seq_**_org.pkl files.')
+    parser.add_argument('--orig_folder', type=str, required=False, default=default_header_proc, 
+          help='Folder containing "original" cohort file cohort_file_org.csv and sequence files ehr_preprocessed_seq_by_day_gnn_org.pkl and ehr_preprocessed_seq_by_day_tabnet_org.pkl.  Provide only if different from output_folder.  Can be a local path or cloud storage gs:// uri.')
     parser.add_argument('--hosp_file', type=str, required=True, help='name of csv file containig all hospitalizations')
     parser.add_argument('--demo_file', type=str, required=True, help='name of csv file containig all demogrpahics')
     parser.add_argument('--cpt_file', type=str, required=True, help='name of csv file containig all procedure')

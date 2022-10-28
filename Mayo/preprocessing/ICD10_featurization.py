@@ -9,7 +9,9 @@ import shutil
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
-icd = pd.read_csv('ICD10_Groups.csv') #ICD10 hierarchy
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+icd = pd.read_csv(os.path.join(script_path, 'ICD10_Groups.csv')) #ICD10 hierarchy
 
 def find_group(code):
     global icd

@@ -12,6 +12,8 @@ import time
 print('all imported')
 sys.stdout.flush()
 
+script_path = os.path.dirname(os.path.realpath(__file__))
+
 def med_featurization(df, df_med):
     """
     df: selected cohort file, one hospitalization per row
@@ -24,7 +26,7 @@ def med_featurization(df, df_med):
     df['ADMIT_DTM'] = pd.to_datetime(df['ADMIT_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     df['DISCHARGE_DTM'] = pd.to_datetime(df['DISCHARGE_DTM'],format = '%Y-%m-%d %H:%M:%S', errors = 'coerce')
     
-    df_med_status_sel = pd.read_csv('administered_status_counts_marked.csv')
+    df_med_status_sel = pd.read_csv(os.path.join(script_path, 'administered_status_counts_marked.csv'))
     df_med_status_sel = df_med_status_sel.dropna(subset=['Include'])
     med_status_sel = df_med_status_sel.Status.values
     
@@ -34,7 +36,7 @@ def med_featurization(df, df_med):
 
     
     
-    meds = pd.read_csv('med_selected.csv')
+    meds = pd.read_csv(os.path.join(script_path, 'med_selected.csv'))
     meds = meds.dropna(subset=['MED_THERAPEUTIC_CLASS_CODE'])
     sel_meds = meds.MED_THERAPEUTIC_CLASS_CODE.values
     print('selected meds:', len(meds))

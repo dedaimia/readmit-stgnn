@@ -9,7 +9,8 @@ import datetime
 from datetime import timedelta
 import sys
 
-sys.path.append("../")
+script_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(script_path, "../"))
 
 from collections import Counter
 from sklearn.preprocessing import LabelEncoder
@@ -17,8 +18,8 @@ from sklearn.preprocessing import LabelEncoder
 
 ###### Constants ######
 
-header_proc = '../ehr/processed/'
-header_raw = '../ehr/raw/'
+#header_proc = '../ehr/processed/'
+#header_raw = '../ehr/raw/'
 
 IMG_FEATURE_DIM = 1024
 
@@ -41,21 +42,21 @@ MEDICATION_COLS = ['ANESTHETICS', 'ANTINEOPLASTICS', 'BIOLOGICALS', 'DIAGNOSTIC'
 ADMIT_COLS = ['vascular disease', 'heart disease', 'disease of metabolism', 'kidney disease', 'sleep disorder', 'cancer', 'disease of mental health', 'overnutrition', 'uterine cancer', 'intestinal disease', 'anemia', 'bacterial infectious disease', 'disease of cellular proliferation', 'aortic valve prolapse', 'mitral valve stenosis', 'blood coagulation disease', 'neuropathy', 'aortic valve stenosis', 'respiratory system disease', 'bone disease', 'brain disease', 'lung disease', 'substance-related disorder', 'nervous system disease', 'genetic disease', 'nutrition disease', 'peripheral nervous system disease', 'cellulitis', 'aortic disease', 'renal tubular transport disease', 'autoimmune disease of the nervous system', 'substance abuse', 'immune system disease', 'thoracic disease', 'autoimmune disease', 'carcinoma', 'bacterial pneumonia', 'disease by infectious agent', 'liver disease', 'muscular disease', 'parathyroid gland disease', 'urinary tract obstruction', 'B-cell lymphoma', 'pancreatitis', 'physical disorder', 'mouth disease', 'prostatic hypertrophy', 'syndrome', 'hepatobiliary disease', 'inherited metabolic disorder', 'gonadal disease', 'endocrine gland cancer', 'hepatic vascular disease', 'viral infectious disease', 'kidney cancer', 'cardiovascular system disease', 'bone marrow disease', 'central nervous system disease', 'leukopenia', 'aphasia', 'connective tissue cancer', 'vein disease', 'pupil disease', 'acanthoma', 'bicuspid aortic valve disease', 'pneumonia', 'mucositis', 'upper respiratory tract disease', 'reproductive organ cancer', 'bladder disease', 'lymph node disease', 'peripheral vascular disease', 'movement disease', 'lower urinary tract calculus', 'female reproductive system disease', 'familial atrial fibrillation', 'uterine disease', 'arthropathy', 'bone cancer', 'hypothyroidism', 'tuberculosis', 'cerebrum cancer', 'gallbladder disease', 'myasthenia gravis', 'gastric outlet obstruction', 'adrenal gland disease', 'colonic benign neoplasm', 'senile cataract', 'bacteriuria', 'hypereosinophilic syndrome', 'central nervous system mesenchymal non-meningothelial tumor', 'exocrine pancreatic insufficiency', 'hemangiopericytoma', 'penile disease', 'esophageal disease', 'vaginal disease', 'colon cancer', 'tauopathy', 'urethral disease', 'diarrhea', 'dermatitis', 'mitral valve insufficiency', 'urolithiasis', 'eyelid disease', 'thyroiditis', 'cartilage disease', 'fasciitis', 'peroxisomal disease', 'angioedema', 'amyotrophic lateral sclerosis', 'liver sarcoma', 'goiter', 'laryngeal disease', 'leukocyte disease', 'male urethral cancer', 'myelitis', 'urticaria', 'leg dermatosis', 'calcinosis', 'intestinal infectious disease', 'hydrocele', 'primary immunodeficiency disease', 'endometriosis', 'mitochondrial metabolism disease', 'adenoma', 'lipomatosis', 'ureteral disease', 'hiatus hernia', 'ischemia', 'congenital hemolytic anemia', 'myopathy', 'splenic disease', 'external ear disease', 'interstitial keratitis', 'panniculitis', 'myocarditis', 'epididymis disease', 'exanthem', 'hyperthyroidism', 'vascular cancer', 'liver benign neoplasm', 'hepatocellular carcinoma', 'nephrolithiasis', 'retinoblastoma', 'hand dermatosis', 'phobic disorder', 'gastric dilatation', 'sex cord-gonadal stromal tumor', 'heart cancer', 'orbital disease', 'mature B-cell neoplasm', 'iris disease', 'strabismus', 'lipodystrophy', 'thyrotoxicosis', 'diabetic cataract', 'motor neuron disease', 'auditory system cancer', 'dystonia', 'neurofibroma', 'gastritis', 'T-cell lymphoblastic leukemia/lymphoma', 'annular pancreas', 'synovitis', 'ocular hypotension', 'peritonitis', 'extrinsic allergic alveolitis', 'hypopituitarism', 'myositis', 'proteinuria', 'varicose veins', 'lymphedema', 'endocrine pancreas disease', 'mononeuritis of upper limb and mononeuritis multiplex', 'blood protein disease', 'adenocarcinoma', 'vasculitis', 'sebaceous gland disease', 'thyroid crisis', 'extracranial neuroblastoma', 'mutism', 'motor neuritis', 'specific language impairment', 'Dieulafoy lesion', 'nail disease', 'neuromuscular disease', 'lacrimal system cancer', 'placenta disease', 'lens disease', 'tenosynovitis', 'cleft palate', 'gastroenteritis', 'sweat gland disease', 'muscle benign neoplasm', 'cavernous hemangioma', 'vascular skin disease', 'parasitic helminthiasis infectious disease', 'distal arthrogryposis', 'pancreatic agenesis', 'appendix disease', 'gastrointestinal tuberculosis', 'necrosis of pituitary', 'trigeminal nerve disease', 'cranial nerve neoplasm', 'histiocytosis', 'severe combined immunodeficiency', 'posterior polar cataract', 'peptic ulcer disease', 'mastocytosis', 'female reproductive organ cancer', 'urethral benign neoplasm', 'prion disease', 'systemic scleroderma', 'vaginal carcinosarcoma', 'male infertility', 'neuroblastoma', 'spinal cord disease', 'infertility', 'pericardium cancer', 'pancreatic steatorrhea', 'thyroid malformation', 'metal metabolism disorder', 'pigmentation disease', 'lymphangitis', 'leiomyoma', 'choroidal sclerosis', 'mixed cell type cancer']
 
 
-DEMO_FILE = os.path.join(
-    header_proc, "cohort_file_w_demo.csv"
-)
-CPT_FILE = os.path.join(
-    header_proc, "cohort_file_w_cpt.csv"
-)
-ICD_FILE = os.path.join(
-    header_proc, "cohort_file_w_icd.csv"
-)
-LAB_FILE = os.path.join(
-    header_proc, 'cohort_file_w_lab.csv'
-)
-MED_FILE = os.path.join(
-    header_proc, 'cohort_file_w_med.csv'
-)
+# DEMO_FILE = os.path.join(
+#     header_proc, "cohort_file_w_demo.csv"
+# )
+# CPT_FILE = os.path.join(
+#     header_proc, "cohort_file_w_cpt.csv"
+# )
+# ICD_FILE = os.path.join(
+#     header_proc, "cohort_file_w_icd.csv"
+# )
+# LAB_FILE = os.path.join(
+#     header_proc, 'cohort_file_w_lab.csv'
+# )
+# MED_FILE = os.path.join(
+#     header_proc, 'cohort_file_w_med.csv'
+# )
 
 
 
@@ -95,9 +96,9 @@ SUBGOUPRS_EXCLUDED = [
     "PR INCISN EXTENSOR TNDN SHTH WRST",
 ]
 
-encoders_dct = pickle.load(open('categorical_encoders.pkl', 'rb'))
+encoders_dct = pickle.load(open(os.path.join(script_path, 'categorical_encoders.pkl'), 'rb'))
 encoders_dct['Chloride, U'] = encoders_dct['Chloride']
-pickle.dump(encoders_dct, open('categorical_encoders.pkl', 'wb'))
+pickle.dump(encoders_dct, open(os.path.join(script_path, 'categorical_encoders.pkl'), 'wb'))
 
 def ehr_bag_of_words(
     df_demo,
@@ -650,7 +651,7 @@ def ehr2sequence(preproc_dict,  by="day"):#df_demo,
         return {"feat_dict": feat_dict, "feature_cols": feature_cols}
 
 
-def main(df_combined):
+def main(df_combined, header_proc):
     if 'split' not in df_combined.columns:
         df_combined['split'] = 'Test'
         
