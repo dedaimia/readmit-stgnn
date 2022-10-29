@@ -8,6 +8,7 @@ from tqdm import tqdm
 import datetime
 from datetime import timedelta
 import sys
+import gcsfs
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(script_path, "../"))
@@ -752,8 +753,15 @@ def main(df_combined, header_proc):
         preproc_dict["med_cols"] = med_cols
         preproc_dict["admit_cols"] = admit_cols
 
+        # pick the appropriate open function depending on whether writing to
+        # local files or google cloud storage
+        open_func = open
+        if (header_proc.startswith("gs:")):
+            fs = gcsfs.GCSFileSystem()
+            open_func = fs.open
+
         # save
-        with open(
+        with open_func(
             os.path.join(header_proc, "ehr_preprocessed_all_{}.pkl".format(format)),
             "wb",
         ) as pf:
@@ -775,7 +783,7 @@ def main(df_combined, header_proc):
             seq_dict["icd_cols"] = icd_cols
             seq_dict["lab_cols"] = lab_cols
             seq_dict["med_cols"] = med_cols
-            with open(
+            with open_func(
                 os.path.join(
                     header_proc,
                     "ehr_preprocessed_seq_by_{}_{}.pkl".format(by, format),
