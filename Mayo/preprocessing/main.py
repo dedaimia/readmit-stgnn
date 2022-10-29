@@ -62,93 +62,93 @@ def main(args):
     header_proc = args.output_folder
     header_orig = args.orig_folder
     
-    # print('building cohort ....')
-    # sys.stdout.flush()
-    # df_hosp  = pd.read_csv(header_raw+args.hosp_file) ##transfer location file form SQL query
-    # df = cohort_selection.cohort_selection(df_hosp)
-    # df.to_csv(header_proc+'cohort_file.csv')
+    print('building cohort ....')
+    sys.stdout.flush()
+    df_hosp  = pd.read_csv(header_raw+args.hosp_file) ##transfer location file form SQL query
+    df = cohort_selection.cohort_selection(df_hosp)
+    df.to_csv(header_proc+'cohort_file.csv')
 
-    # print('cohort demographics ....')
-    # sys.stdout.flush()
-    # df = pd.read_csv(header_proc+'cohort_file.csv')
-    # df_demo = pd.read_csv(header_raw+args.demo_file) ## patient demographic file from SQL query
-    # df_demo = demo_featurization(df, df_demo)
-    # df_demo.to_csv(header_proc+'cohort_file_w_demo.csv')
+    print('cohort demographics ....')
+    sys.stdout.flush()
+    df = pd.read_csv(header_proc+'cohort_file.csv')
+    df_demo = pd.read_csv(header_raw+args.demo_file) ## patient demographic file from SQL query
+    df_demo = demo_featurization(df, df_demo)
+    df_demo.to_csv(header_proc+'cohort_file_w_demo.csv')
 
-    # print('cohort CPT ....')
-    # sys.stdout.flush()
-    # df = pd.read_csv(header_proc+'cohort_file.csv')
-    # df_cpt= pd.read_csv(header_raw+args.cpt_file) ## procedures file from SQL query
-    # df_cpt = cpt_featurization(df, df_cpt)
-    # df_cpt.to_csv(header_proc+'cohort_file_w_cpt.csv')
+    print('cohort CPT ....')
+    sys.stdout.flush()
+    df = pd.read_csv(header_proc+'cohort_file.csv')
+    df_cpt= pd.read_csv(header_raw+args.cpt_file) ## procedures file from SQL query
+    df_cpt = cpt_featurization(df, df_cpt)
+    df_cpt.to_csv(header_proc+'cohort_file_w_cpt.csv')
 
-    # print('cohort ICD ....')
-    # sys.stdout.flush()
-    # df = pd.read_csv(header_proc+'cohort_file.csv')
-    # df_icd= pd.read_csv(header_raw+args.icd_file) ## diagnoses file from SQL query
-    # df_icd = icd_featurization(df, df_icd)
-    # df_icd.to_csv(header_proc+'cohort_file_w_icd.csv')
+    print('cohort ICD ....')
+    sys.stdout.flush()
+    df = pd.read_csv(header_proc+'cohort_file.csv')
+    df_icd= pd.read_csv(header_raw+args.icd_file) ## diagnoses file from SQL query
+    df_icd = icd_featurization(df, df_icd)
+    df_icd.to_csv(header_proc+'cohort_file_w_icd.csv')
 
-    # print('cohort Labs ....')
-    # sys.stdout.flush()
-    # df = pd.read_csv(header_proc+'cohort_file.csv')
-    # df_lab= pd.read_csv(header_raw+args.lab_file) ## lab tests file from SQL query
-    # df_lab = lab_featurization(df, df_lab)
-    # df_lab.to_csv(header_proc+'cohort_file_w_lab.csv')
+    print('cohort Labs ....')
+    sys.stdout.flush()
+    df = pd.read_csv(header_proc+'cohort_file.csv')
+    df_lab= pd.read_csv(header_raw+args.lab_file) ## lab tests file from SQL query
+    df_lab = lab_featurization(df, df_lab)
+    df_lab.to_csv(header_proc+'cohort_file_w_lab.csv')
 
-    # print('cohort Medications ....')
-    # sys.stdout.flush()
-    # df = pd.read_csv(header_proc+'cohort_file.csv')
-    # df_med= pd.read_csv(header_raw+args.med_file) ## medication file from SQL query
-    # df_med = med_featurization(df, df_med)
-    # df_med.to_csv(header_proc+'cohort_file_w_med.csv')
+    print('cohort Medications ....')
+    sys.stdout.flush()
+    df = pd.read_csv(header_proc+'cohort_file.csv')
+    df_med= pd.read_csv(header_raw+args.med_file) ## medication file from SQL query
+    df_med = med_featurization(df, df_med)
+    df_med.to_csv(header_proc+'cohort_file_w_med.csv')
 
-    # print('merging files ....')
-    # sys.stdout.flush()
-    # df_demo = pd.read_csv(header_proc+'cohort_file_w_demo.csv')
-    # df_demo['PATIENT_AGE_NEW'] = df_demo['PATIENT_AGE'].copy()
-    # for c in ADMIT_COLS:
-    #     df_demo[c] = 0
-    # df_cpt = pd.read_csv(header_proc+'cohort_file_w_cpt.csv')
-    # for c in CPT_COLS:
-    #     if c not in df_cpt.columns:
-    #         df_cpt[c] = None
-    # df_icd = pd.read_csv(header_proc+'cohort_file_w_icd.csv')
-    # for c in ICD_COLS:
-    #     if c not in df_icd.columns:
-    #         df_icd[c] = None
-    # df_lab = pd.read_csv(header_proc+'cohort_file_w_lab.csv')
-    # for c in LAB_COLS:
-    #     if c not in df_lab.columns:
-    #         df_lab[c] = 'UNKNOWN'
-    # df_med = pd.read_csv(header_proc+'cohort_file_w_med.csv')
-    # for c in MEDICATION_COLS:
-    #     if c not in df_med.columns:
-    #         df_med[c] = None
+    print('merging files ....')
+    sys.stdout.flush()
+    df_demo = pd.read_csv(header_proc+'cohort_file_w_demo.csv')
+    df_demo['PATIENT_AGE_NEW'] = df_demo['PATIENT_AGE'].copy()
+    for c in ADMIT_COLS:
+        df_demo[c] = 0
+    df_cpt = pd.read_csv(header_proc+'cohort_file_w_cpt.csv')
+    for c in CPT_COLS:
+        if c not in df_cpt.columns:
+            df_cpt[c] = None
+    df_icd = pd.read_csv(header_proc+'cohort_file_w_icd.csv')
+    for c in ICD_COLS:
+        if c not in df_icd.columns:
+            df_icd[c] = None
+    df_lab = pd.read_csv(header_proc+'cohort_file_w_lab.csv')
+    for c in LAB_COLS:
+        if c not in df_lab.columns:
+            df_lab[c] = 'UNKNOWN'
+    df_med = pd.read_csv(header_proc+'cohort_file_w_med.csv')
+    for c in MEDICATION_COLS:
+        if c not in df_med.columns:
+            df_med[c] = None
 
-    # merge_cols = ['PATIENT_DK', 'ADMIT_DTM']
-    # df_cpt[CPT_COLS] = df_cpt[CPT_COLS].fillna(0)
-    # df_combined = df_cpt.merge(df_demo[merge_cols+DEMO_COLS+ADMIT_COLS], on = merge_cols, how='left')
-    # merge_cols = ['PATIENT_DK', 'ADMIT_DTM', 'Day_Number']
-    # df_icd[ICD_COLS] = df_icd[ICD_COLS].fillna(0)
-    # df_combined = df_combined.merge(df_icd[merge_cols+ICD_COLS], on = merge_cols, how='left')
-    # df_lab[LAB_COLS] = df_lab[LAB_COLS].fillna('UNKNOWN')
-    # df_combined = df_combined.merge(df_lab[merge_cols+LAB_COLS], on = merge_cols, how='left')
-    # df_med[MEDICATION_COLS] = df_med[MEDICATION_COLS].fillna(0)
-    # df_combined = df_combined.merge(df_med[merge_cols+MEDICATION_COLS], on = merge_cols, how='left')
+    merge_cols = ['PATIENT_DK', 'ADMIT_DTM']
+    df_cpt[CPT_COLS] = df_cpt[CPT_COLS].fillna(0)
+    df_combined = df_cpt.merge(df_demo[merge_cols+DEMO_COLS+ADMIT_COLS], on = merge_cols, how='left')
+    merge_cols = ['PATIENT_DK', 'ADMIT_DTM', 'Day_Number']
+    df_icd[ICD_COLS] = df_icd[ICD_COLS].fillna(0)
+    df_combined = df_combined.merge(df_icd[merge_cols+ICD_COLS], on = merge_cols, how='left')
+    df_lab[LAB_COLS] = df_lab[LAB_COLS].fillna('UNKNOWN')
+    df_combined = df_combined.merge(df_lab[merge_cols+LAB_COLS], on = merge_cols, how='left')
+    df_med[MEDICATION_COLS] = df_med[MEDICATION_COLS].fillna(0)
+    df_combined = df_combined.merge(df_med[merge_cols+MEDICATION_COLS], on = merge_cols, how='left')
 
 
-    # def node_name(pid, dt):
-    #     return str(pid)+'_'+str(dt)
+    def node_name(pid, dt):
+        return str(pid)+'_'+str(dt)
 
-    # df_combined["node_name"] = df_combined.apply(lambda x: node_name(x.PATIENT_DK, x.ADMIT_DTM), axis=1)
-    # df_combined = df_combined.loc[:, ~df_combined.columns.duplicated()]
-    # df_combined.to_csv(header_proc+'ehr_combined.csv')
+    df_combined["node_name"] = df_combined.apply(lambda x: node_name(x.PATIENT_DK, x.ADMIT_DTM), axis=1)
+    df_combined = df_combined.loc[:, ~df_combined.columns.duplicated()]
+    df_combined.to_csv(header_proc+'ehr_combined.csv')
 
-    # print('processing EHR for sequence creation ...')
-    # sys.stdout.flush()
-    # df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
-    # preprocess_ehr_Mayo.main(df_combined, header_proc)
+    print('processing EHR for sequence creation ...')
+    sys.stdout.flush()
+    df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
+    preprocess_ehr_Mayo.main(df_combined, header_proc)
 
     print('combining sequences with pre-made sequences')
 
