@@ -8,6 +8,7 @@ from dgl.data import DGLDataset
 from tqdm import tqdm
 from sklearn.preprocessing import StandardScaler
 import sys
+import gcsfs
 
 
 from scipy.spatial.distance import cosine, hamming, euclidean, jaccard
@@ -21,6 +22,17 @@ from data.readmission_utils import *
 
 # READMIT_DEMO_FILE = "/home/siyi/data_readmission/Readmission_label_Demo_48hr_lowQualRemoved.csv"
 # READMIT_DEMO_FILE = "/home/siyi/data_readmission/Readmission_mini.csv"
+
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+def open_local_or_gs(path, flags, mode=0o777):
+    if (path.startswith("gs:")):
+        global cloud_storage_fs
+        if (cloud_storage_fs is None):
+            cloud_storage_fs = gcsfs.GCSFileSystem()
+        return cloud_storage_fs.open(path, flags, mode)
+    else:
+        return open(path, flags, mode)
 
 def compute_dist_mat(demo_dict, scale=False, admit_reason_dict=None):
     """
@@ -234,7 +246,7 @@ def construct_graph_readmission(
 
     elif feature_type == "non-imaging":
         assert ehr_feature_file is not None
-        with open(ehr_feature_file, "rb") as pf:
+        with open_local_or_gs(ehr_feature_file, "rb") as pf:
             raw_feat_dict = pickle.load(pf)
         feat_dict = raw_feat_dict["feat_dict"]
         feat_cols = raw_feat_dict["feature_cols"]
@@ -307,7 +319,7 @@ def construct_graph_readmission(
         )
 
         # ehr features
-        with open(ehr_feature_file, "rb") as pf:
+        with open_local_or_gs(ehr_feature_file, "rb") as pf:
             raw_ehr_dict = pickle.load(pf)
         ehr_feat_dict = raw_ehr_dict["feat_dict"]
         ehr_feat_cols = raw_ehr_dict["feature_cols"]
@@ -431,7 +443,7 @@ def construct_graph_readmission(
         or ("admit_reason" in edge_modality)
     ):
         assert edge_ehr_file is not None
-        with open(edge_ehr_file, "rb") as pf:
+        with open_local_or_gs(edge_ehr_file, "rb") as pf:
             raw_ehr_dict = pickle.load(pf)
         feat_cols = raw_ehr_dict["feature_cols"]
         node_edge_dict = {}

@@ -17,7 +17,7 @@ sys.path.append(code_path)
 os.environ['DGLBACKEND'] = "pytorch"
 
 import train
-import Mayo.ehr.preprocessing
+import Mayo.preprocessing
 
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def instructions():
         'preprocess just expects "input_folder" and "output_folder" in the input json'
         'both can be either local or gs:// paths.'
         'Predict is expected to be called via vertex AI predict so expects input in vertex AIs format '
-        ')
+        )
 
 @app.route("/preprocess", methods = ["POST"])
 def run_preprocess():
