@@ -57,7 +57,7 @@ python3 train.py \
     --data_augment False \
     --standardize True \
     --dataset mayo \
-    --gpu_id 1
+    --gpu_id 0
     
     
  
