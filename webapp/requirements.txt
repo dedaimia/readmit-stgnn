@@ -1,0 +1,31 @@
+# TODO: Settle what reqs file to use. WandB outputs fail build.
+
+torch==1.9
+flask[async]
+flask_cors
+gunicorn
+python-dotenv
+
+# reqs from conda yml setup
+torchvision
+scipy
+numpy
+matplotlib
+pandas
+scikit-learn
+pip
+
+dgl
+tqdm
+graphviz
+dotted-dict
+networkx
+pydicom
+pypng
+
+# Google reqs
+gcsfs
+
+
+# new addition
+pytorch-tabnet
