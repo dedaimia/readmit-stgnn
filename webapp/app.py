@@ -18,6 +18,7 @@ os.environ['DGLBACKEND'] = "pytorch"
 
 import train
 import Mayo.preprocessing
+from webapp_utils import defaultInferenceArgs
 
 
 app = Flask(__name__)
@@ -56,30 +57,25 @@ def run_preprocess():
 @app.route('/predict', methods=['POST'])
 def predict():
 
-    # request should contain graph_path and output_path
+    # request should contain demos filepath, edge_ehr_file path, ehr_feature_file path and output_path
     # Todo: nicer error message if data doesn't contain expected fields
-    print("request.json ", json.dumps(request.json))
     data = request.json['instances'][0]
 
     # ensure trailing slashes on both folders
     results_folder = data['output_folder'].rstrip('/') + '/'
 
     # Create graph application args
-    apply_args = SimpleNamespace()
-    apply_args.do_train = "False"
-    apply_args.graph_name = data['graph_path']
-    apply_args.ehr_file = data['ehr_file']
-    apply_args.bigquery_table = None
-    if("bigquery_table" in data):
-        apply_args.bigquery_table = data['bigquery_table']
-    apply_args.results_path = results_folder
+    infer_args = defaultInferenceArgs(edge_ehr_files=data['edge_ehr_files'], 
+    ehr_feature_files=data['ehr_feature_files'],
+    demo_file=data['demo_file']
+    )
 
     # apply graph
-    apply_GNN.apply_GNN(apply_args)
+    train.main(infer_args)
 
     return [{'predictions': 'Inference performed succesfully, results logged to Big Query.'}]
 
 @app.route('/status', methods=['GET'])
-async def health_check():
+def health_check():
 	status_code = Response(status=200)
 	return status_code
