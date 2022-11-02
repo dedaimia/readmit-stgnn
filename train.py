@@ -130,7 +130,7 @@ def main(args):
     logger.info("Args: {}".format(dumps(vars(args), indent=4, sort_keys=True)))
 
     # wandb
-    if('wandb_mode' in args):
+    if('wandb_mode' in args.__dict__):
         wandb.init(project="covid-gnn", entity="siyitang", mode=args.wandb_mode)
         wandb.init(config=args, mode=args.wandb_mode)
     else:

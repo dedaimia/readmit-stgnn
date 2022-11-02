@@ -62,3 +62,4 @@ class defaultInferenceArgs(SimpleNamespace):
         self.standardize = True
         self.dataset = 'mayo'
         self.gpu_id = 0
+        self.wandb_mode = 'offline'
