@@ -6,10 +6,7 @@ code_path = os.path.join(script_path, '..')
 
 class defaultInferenceArgs(SimpleNamespace):
     def _init_ (self, edge_ehr_file=None, ehr_feature_file=None, demo_file=None):
-        # Commonly changed args for inference
-        self.edge_ehr_files = edge_ehr_file
-        self.ehr_feature_files = ehr_feature_file
-        self.demo_file = demo_file
+        super().__init__(edge_ehr_file=edge_ehr_file, ehr_feature_file=ehr_feature_file, demo_file=demo_file)
 
         # Researcher set args - leaving separate to match formatting of run.sh
         edge_modality = 'cpt'
@@ -26,7 +23,7 @@ class defaultInferenceArgs(SimpleNamespace):
         num_rnn_layers = 1
 
         # Likely to never change for inference
-        self.save_dir = os.path.join(script_path, 'temp_storage')
+        self.save_dir = os.path.join(code_path, 'temp_storage')
         self.label_cutoff = 1
         self.edge_modality = edge_modality
         self.feature_type = feature_type

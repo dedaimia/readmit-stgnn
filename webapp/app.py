@@ -8,6 +8,8 @@ import sys
 import json
 from types import SimpleNamespace
 import os
+import pickle
+import pandas as pd
 
 # add the code repo folder to your python module search path, so imports will work:
 script_path = os.path.dirname(os.path.realpath(__file__))
@@ -72,6 +74,11 @@ def predict():
 
     # apply graph
     train.main(infer_args)
+
+    with open(os.path.join(infer_args.save_dir, 'test_predictions.pkl'), 'rb') as f:
+        predictions = pd.read_pickle(f)
+    
+    predictions.to_csv(os.path.join(results_folder, 'readmit-preds.csv'))
 
     return [{'predictions': 'Inference performed succesfully, results logged to Big Query.'}]
 
