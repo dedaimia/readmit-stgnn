@@ -5,7 +5,7 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 code_path = os.path.join(script_path, '..')
 
 class defaultInferenceArgs(SimpleNamespace):
-    def _init_ (self, edge_ehr_file=None, ehr_feature_file=None, demo_file=None):
+    def __init__ (self, edge_ehr_file=None, ehr_feature_file=None, demo_file=None):
         super().__init__(edge_ehr_file=edge_ehr_file, ehr_feature_file=ehr_feature_file, demo_file=demo_file)
 
         # Researcher set args - leaving separate to match formatting of run.sh
