@@ -16,10 +16,11 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 code_path = os.path.join(script_path, "..")
 sys.path.append(code_path)
 
+
 os.environ['DGLBACKEND'] = "pytorch"
 
 import train
-import Mayo.preprocessing
+import Mayo.preprocessing.main as preprocess
 from webapp_utils import defaultInferenceArgs
 
 
@@ -30,8 +31,8 @@ def instructions():
     return ('Call POST /preprocess for preprocessing'
         'Then call POST /predict to build the graph and preduct'
         'GET /status is to make vertex AI predict'
-        'preprocess just expects "input_folder" and "output_folder" in the input json'
-        'both can be either local or gs:// paths.'
+        'preprocess expects "input_folder", "output_folder", and "originals_folder" in the input json'
+        'all can be either local or gs:// paths.'
         'Predict is expected to be called via vertex AI predict so expects input in vertex AIs format '
         )
 
@@ -42,18 +43,22 @@ def run_preprocess():
     # ensure trailing slashes on both folders
     input_folder = data['input_folder'].rstrip('/') + '/'
     output_folder = data['output_folder'].rstrip('/') + '/'
+    originals_folder = data['originals_folder'].rstrip('/') + '/'
 
     # hard code expected file names (inside input folder)
     preprocessor_args = SimpleNamespace()
+    preprocessor_args.input_folder = input_folder
+    preprocessor_args.output_folder = output_folder 
+    preprocessor_args.orig_folder = originals_folder
     preprocessor_args.hosp_file = "hosp.csv"
     preprocessor_args.demo_file = "dem.csv"
     preprocessor_args.cpt_file = "cpt.csv"
     preprocessor_args.icd_file = "icd.csv"
     preprocessor_args.lab_file = "lab.csv"
-    preprocessor_args.vit_file = "vit.csv"
+    preprocessor_args.med_file = "med.csv"
 
     # call the preprocessor
-    preprocess.preprocess(preprocessor_args, input_folder, output_folder)
+    preprocess.main(preprocessor_args)
     return "<p>Preprocessing Complete<p>"
     
 @app.route('/predict', methods=['POST'])

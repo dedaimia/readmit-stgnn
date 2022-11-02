@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import time
 
+# add the folder this script is in to python module search path, so imports will work
+# regardless of where script is called from
+script_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(script_path)
+ 
 import cohort_selection
 from demographic_featurization import demo_featurization
 from CPT_featurization import cpt_featurization
