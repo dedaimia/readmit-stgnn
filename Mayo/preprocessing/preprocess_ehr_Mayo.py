@@ -98,8 +98,11 @@ SUBGOUPRS_EXCLUDED = [
 ]
 
 encoders_dct = pickle.load(open(os.path.join(script_path, 'categorical_encoders.pkl'), 'rb'))
-encoders_dct['Chloride, U'] = encoders_dct['Chloride']
-pickle.dump(encoders_dct, open(os.path.join(script_path, 'categorical_encoders.pkl'), 'wb'))
+# new categorical_eoncoders.pkl checked in so it should already have this change
+# reading and writing the same pkl file at import time causes a problem when deployed to
+# vertex AI or cloud run with multiple threads executing the same code
+#encoders_dct['Chloride, U'] = encoders_dct['Chloride']
+#pickle.dump(encoders_dct, open(os.path.join(script_path, 'categorical_encoders.pkl'), 'wb'))
 
 def ehr_bag_of_words(
     df_demo,
