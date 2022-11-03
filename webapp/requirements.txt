@@ -29,3 +29,4 @@ gcsfs
 
 # new addition
 pytorch-tabnet
+wandb
