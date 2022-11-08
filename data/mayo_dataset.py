@@ -25,6 +25,8 @@ from data.readmission_utils import *
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
+cloud_storage_fs = None
+
 def open_local_or_gs(path, flags, mode=0o777):
     if (path.startswith("gs:")):
         global cloud_storage_fs
