@@ -45,6 +45,10 @@ def run_preprocess():
     output_folder = data['output_folder'].rstrip('/') + '/'
     originals_folder = data['originals_folder'].rstrip('/') + '/'
 
+    step = 'all'
+    if('step' in data):
+        step = data['step']
+
     # hard code expected file names (inside input folder)
     preprocessor_args = SimpleNamespace()
     preprocessor_args.input_folder = input_folder
@@ -56,10 +60,11 @@ def run_preprocess():
     preprocessor_args.icd_file = "icd.csv"
     preprocessor_args.lab_file = "lab.csv"
     preprocessor_args.med_file = "med.csv"
+    preprocessor_args.step = step
 
     # call the preprocessor
     preprocess.main(preprocessor_args)
-    return "<p>Preprocessing Complete<p>"
+    return f"<p>Preprocessing Complete step {step} <p>"
     
 @app.route('/predict', methods=['POST'])
 def predict():

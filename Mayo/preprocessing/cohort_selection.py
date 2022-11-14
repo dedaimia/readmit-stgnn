@@ -16,7 +16,7 @@ def cohort_selection(df):
     df : transfer_locations file - contains one transfer withint hospital per row - one hospitalization spans multiple rows but share the same PATIENT_DK, ADMIT_DTM, and DISCHARGE_DTM
     """
     # df = df.dropna(subset=['DISCHARGE_DTM']) #sometimes discharge time is not recorded properly
-    df['DISCHARGE_DTM'] = datetime.now()
+    df['DISCHARGE_DTM'] = df['DISCHARGE_DTM'].apply(lambda dis: min(datetime.strptime(dis, '%Y-%m-%d %H:%M:%S'), datetime.now()))
     df = df.drop_duplicates(subset=['PATIENT_DK', 'ADMIT_DTM'])
     print('Unique hospitalizations:\t', len(df))
     df['ADMIT_DTM'] = pd.to_datetime(df.ADMIT_DTM, errors='coerce')
