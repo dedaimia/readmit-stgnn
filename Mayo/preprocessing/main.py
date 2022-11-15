@@ -159,9 +159,8 @@ def main(args):
         df_combined = pd.read_csv(header_proc+'ehr_combined.csv')
         preprocess_ehr_Mayo.main(df_combined, header_proc)
 
-        print('combining sequences with pre-made sequences')
-
     if(step == 3 or step == 'all'):
+        print('combining sequences with pre-made sequences - tabnet')
         fname = 'ehr_preprocessed_seq_by_day_tabnet'
         dct_org = pkl.load(open_local_or_gs(header_orig+fname+'_org.pkl', 'rb'))
         dct = pkl.load(open_local_or_gs(header_proc+fname+'.pkl', 'rb'))
@@ -169,6 +168,8 @@ def main(args):
             dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
         pkl.dump(dct_org, open_local_or_gs(header_proc+fname+'_appended.pkl', 'wb'))
 
+    if(step == 4 or step == 'all'):
+        print('combining sequences with pre-made sequences - gnn')
         fname =  'ehr_preprocessed_seq_by_day_gnn'
         dct_org = pkl.load(open_local_or_gs(header_orig+fname+'_org.pkl', 'rb'))
         dct = pkl.load(open_local_or_gs(header_proc+fname+'.pkl', 'rb'))
@@ -176,7 +177,7 @@ def main(args):
             dct_org['feat_dict'][k] = dct['feat_dict'][k].copy()
         pkl.dump(dct_org, open_local_or_gs(header_proc+fname+'_appended.pkl', 'wb'))
 
-    if(step == 4 or step == 'all'):
+   
         print('adding rows to base cohort file')
         df = pd.read_csv(header_orig+'cohort_file_org.csv')
         mask = df['split']=='test'
