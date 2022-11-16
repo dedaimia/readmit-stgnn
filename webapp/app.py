@@ -10,6 +10,12 @@ from types import SimpleNamespace
 import os
 import pickle
 import pandas as pd
+import base64
+import threading
+import traceback
+import logging
+import gcsfs
+from datetime import datetime
 
 # add the code repo folder to your python module search path, so imports will work:
 script_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,11 +32,26 @@ from webapp_utils import defaultInferenceArgs
 
 app = Flask(__name__)
 
+# pick the appropriate open function depending on whether 
+# path is local or google cloud storage
+# Todo:  this same code is in Mayo/preprocessing/main.py, consider moving to a utils file
+cloud_storage_fs = None
+def open_local_or_gs(path, flags, mode=0o777):
+    if (path.startswith("gs:")):
+        global cloud_storage_fs
+        if (cloud_storage_fs is None):
+            cloud_storage_fs = gcsfs.GCSFileSystem()
+        return cloud_storage_fs.open(path, flags, mode)
+    else:
+        return open(path, flags, mode)
+
+STATUS_COLS = ["Step", "Start Time", "End Time", "Status", "Output"]
+
 @app.route("/")
 def instructions():
     return ('Call POST /preprocess for preprocessing'
         'Then call POST /predict to build the graph and preduct'
-        'GET /status is to make vertex AI predict'
+        'GET /status is to make vertex AI predict happy'
         'preprocess expects "input_folder", "output_folder", and "originals_folder" in the input json'
         'all can be either local or gs:// paths.'
         'Predict is expected to be called via vertex AI predict so expects input in vertex AIs format '
@@ -76,21 +97,51 @@ def predict():
     # ensure trailing slashes on both folders
     results_folder = data['output_folder'].rstrip('/') + '/'
 
+    # write initial status:
+    status_file = os.path.join(results_folder, "status.csv")
+    status_df = pd.DataFrame(data=None, index=None, columns=STATUS_COLS, dtype=None, copy=None)
+    status_df.loc[0] = ["readmit-predict", datetime.now(), None, "Running", None]
+    status_df.to_csv(status_file)
+
     # Create graph application args
     infer_args = defaultInferenceArgs(edge_ehr_files=data['edge_ehr_files'], 
     ehr_feature_files=data['ehr_feature_files'],
     demo_file=data['demo_file']
     )
 
+    # decide whether we're running asynchronously (returning immediately and continuing processing, or synchronously)
+    asynchronous = False
+    if 'asynchronous' in data:
+        asynchronous = data['asynchronous']
+
+    if(asynchronous):
+        thread = threading.Thread(target=predict_and_convert_results, kwargs={
+            "results_folder": results_folder, 
+            "status_file": status_file, 
+            "status_df": status_df, 
+            "infer_args": infer_args})
+        thread.start()
+        return [{'predictions': f'Inference started.  Check {status_file} for status.'}]
+    else: 
+        predict_and_convert_results(results_folder, status_file, status_df, infer_args)
+        return [{'predictions': 'Inference performed succesfully, results logged to Big Query.'}]
+
+def predict_and_convert_results(results_folder, status_file, status_df,  infer_args):
     # apply graph
-    train.main(infer_args)
+    try:
+        train.main(infer_args)
 
-    with open(os.path.join(infer_args.save_dir, 'test_predictions.pkl'), 'rb') as f:
-        predictions = pd.read_pickle(f)
-    
-    predictions.to_csv(os.path.join(results_folder, 'readmit-preds.csv'))
+        with open(os.path.join(infer_args.save_dir, 'test_predictions.pkl'), 'rb') as f:
+            predictions = pd.read_pickle(f)
+            predictions.to_csv(os.path.join(results_folder, 'readmit-preds.csv'))
 
-    return [{'predictions': 'Inference performed succesfully, results logged to Big Query.'}]
+        status_df.loc[0, ['End Time', 'Status', 'Output']] = [datetime.now(), "Success", None]
+   
+    except Exception as e:
+        logging.exception('unexpected error in readmit predict ')
+        status_df.loc[0, ['End Time', 'Status', 'Output']] = [datetime.now(), "Failed", "See Logs"]
+
+    status_df.to_csv(status_file)
 
 @app.route('/status', methods=['GET'])
 def health_check():
