@@ -135,6 +135,7 @@ pretrained/best.pth.tar
 # don't push data files
 Mayo/ehr/
 results/
+node_mapping.pkl
 
 # wandb output
 wandb/

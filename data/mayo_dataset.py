@@ -24,6 +24,7 @@ from data.readmission_utils import *
 # READMIT_DEMO_FILE = "/home/siyi/data_readmission/Readmission_mini.csv"
 
 script_path = os.path.dirname(os.path.realpath(__file__))
+code_path = os.path.join(script_path, "..")
 
 cloud_storage_fs = None
 
@@ -223,6 +224,10 @@ def construct_graph_readmission(
     node2idx = {}
     for idx, name in enumerate(node_names):
         node2idx[name] = idx
+
+    # save node mapping to join with predictions for patient info
+    with open(os.path.join(code_path, 'node_mapping.pkl'), 'wb') as f:
+        pickle.dump(node2idx, f)
 
     # node features (i.e. imaging features) to ndata
     if feature_type == "imaging":

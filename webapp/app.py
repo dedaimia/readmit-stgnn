@@ -132,8 +132,12 @@ def predict_and_convert_results(results_folder, status_file, status_df,  infer_a
         train.main(infer_args)
 
         with open(os.path.join(infer_args.save_dir, 'test_predictions.pkl'), 'rb') as f:
-            predictions = pd.read_pickle(f)
-            predictions.to_csv(os.path.join(results_folder, 'readmit-preds.csv'))
+            predictions = pd.DataFrame(pd.read_pickle(f)).set_index('node_indices')
+        with open(os.path.join(code_path, 'node_mapping.pkl'), 'rb') as f:
+            maps = pd.DataFrame(list(pd.read_pickle(f)))
+        final_preds = pd.mrge(predictions, maps, left_index=True, right_index=True)
+
+        final_preds.to_csv(os.path.join(results_folder, 'readmit-preds.csv'))
 
         status_df.loc[0, ['End Time', 'Status', 'Output']] = [datetime.now(), "Success", None]
    
